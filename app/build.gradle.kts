@@ -47,7 +47,6 @@ dependencies {
     implementation(UiDependencies.navigation_fragment)
     implementation(UiDependencies.navigation_ui)
 
-
     testImplementation(TestDependencies.junit)
     testImplementation(TestDependencies.mockk)
     testImplementation(CommonDependencies.coroutinesTest)
