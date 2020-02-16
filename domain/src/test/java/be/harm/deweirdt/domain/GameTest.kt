@@ -1,6 +1,6 @@
 package be.harm.deweirdt.domain
 
-import junit.framework.Assert.assertEquals
+import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 
@@ -24,21 +24,66 @@ class GameTest {
     }
 
     @Test
-    fun `switching to the next player when the current player is X makes O the current player`() {
+    fun `a player making a move automatically results in the current player being updated to the other player`() {
+        // Arrange
+        val firstPlayer = game.currentPlayer
+
         // Act
-        game.nextPlayer()
+        game.makeMove(0, 0)
 
         // Assert
-        assertEquals(game.currentPlayer.symbol, 'O')
+        assertNotEquals(firstPlayer, game.currentPlayer)
     }
 
     @Test
-    fun `switching to the next player when the current player is O makes X the current player`() {
+    fun `making a move as a player results in that player's symbol being shown on the board`() {
         // Act
-        game.nextPlayer()
-        game.nextPlayer()
+        val currentPlayerSymbol = game.currentPlayer.symbol
+        game.makeMove(0, 0)
 
         // Assert
-        assertEquals(game.currentPlayer.symbol, 'X')
+        assertEquals(currentPlayerSymbol, game.board[0, 0].symbol)
+    }
+
+    @Test(expected = IllegalArgumentException::class)
+    fun `a player placing his symbol on an already occupied place results in an error`() {
+        // Arrange
+        game.makeMove(0, 0)
+
+        // Act
+        game.makeMove(0, 0)
+    }
+
+    @Test
+    fun `a game is over when the board is full`() {
+        // Arrange
+        for (rowIndex in 0 until DIMENSION) {
+            for (columnIndex in 0 until DIMENSION) {
+                game.makeMove(rowIndex, columnIndex)
+            }
+        }
+
+        // Act
+        val isOver = game.isOver
+
+        // Assert
+        assertTrue(isOver)
+    }
+
+    @Test
+    fun `a game is over when one of the players has a horizontal three-in-a-row`() {
+    }
+
+    @Test
+    fun `a game is over when one of the players has a diagonal three-in-a-row`() {
+    }
+
+    @Test
+    fun `a game is over when one of the players has a vertical three-in-a-row`() {
+    }
+
+    @Test
+    fun `an game where noone has made a move is not over`() {
+        assertFalse(game.isOver)
     }
 }

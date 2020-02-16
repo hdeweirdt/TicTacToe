@@ -18,12 +18,7 @@ class Board : Iterable<Field> {
             return true
         }
 
-    // TODO: create in function of DIMENSION
-    val fields = arrayOf(
-        arrayOf(Field(), Field(), Field()),
-        arrayOf(Field(), Field(), Field()),
-        arrayOf(Field(), Field(), Field())
-    )
+    val fields = Array(DIMENSION) { Array(DIMENSION) { Field() } }
 
     operator fun get(row: Int, column: Int): Field {
         return fields[row][column]
