@@ -3,19 +3,17 @@ package be.harm.deweirdt.domain
 import junit.framework.TestCase.assertFalse
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
-import org.junit.Before
 import org.junit.Test
 
 class BoardTest {
     private lateinit var board: Board
 
-    @Before
-    fun setUp() {
-        board = Board()
-    }
-
     @Test
-    fun `the board consist of 3 by 3 fields`() {
+    fun `the default board consists of 3 by 3 fields`() {
+        // Act
+        board = Board()
+
+        // Assert
         assertEquals(3, board.fields.size)
 
         assertEquals(3, board.fields[0].size)
@@ -24,13 +22,68 @@ class BoardTest {
     }
 
     @Test
+    fun `a board can be constructed from a string representation`() {
+        // Arrange
+        val inputString = """
+            X.X
+            X.O
+            O.X
+        """.trimIndent()
+
+        // Act
+        val resultingBoard = Board(inputString)
+
+        // Assert
+        assertEquals('X', resultingBoard.fields[0][0].symbol)
+        assertEquals('.', resultingBoard.fields[0][1].symbol)
+        assertEquals('X', resultingBoard.fields[0][2].symbol)
+
+        assertEquals('X', resultingBoard.fields[1][0].symbol)
+        assertEquals('.', resultingBoard.fields[1][1].symbol)
+        assertEquals('O', resultingBoard.fields[1][2].symbol)
+
+        assertEquals('O', resultingBoard.fields[2][0].symbol)
+        assertEquals('.', resultingBoard.fields[2][1].symbol)
+        assertEquals('X', resultingBoard.fields[2][2].symbol)
+    }
+
+    @Test(expected = AssertionError::class)
+    fun `a board can not be constructed from an invalid string representation`() {
+        // Arrange
+        val inputString =
+            """
+            X.
+            X.O
+            O.X
+            """.trimIndent()
+
+        // Act
+        val resultingBoard = Board(inputString)
+
+        // Assert
+        assertEquals('X', resultingBoard.fields[0][0].symbol)
+        assertEquals('.', resultingBoard.fields[0][1].symbol)
+        assertEquals('X', resultingBoard.fields[0][2].symbol)
+
+        assertEquals('X', resultingBoard.fields[1][0].symbol)
+        assertEquals('.', resultingBoard.fields[1][1].symbol)
+        assertEquals('O', resultingBoard.fields[1][2].symbol)
+
+        assertEquals('O', resultingBoard.fields[2][0].symbol)
+        assertEquals('.', resultingBoard.fields[2][1].symbol)
+        assertEquals('X', resultingBoard.fields[2][2].symbol)
+    }
+
+    @Test
     fun `a board is considered full when all fields are not empty`() {
         // Arrange
-        for (rowIndex in 0 until DIMENSION) {
-            for (columnIndex in 0 until DIMENSION) {
-                board.placeSymbol('X', rowIndex, columnIndex)
-            }
-        }
+        val board = Board(
+            """
+            XOX
+            XXX
+            OOO
+            """.trimIndent()
+        )
 
         // Act
         val isFull = board.isFull
@@ -42,7 +95,13 @@ class BoardTest {
     @Test
     fun `a board is not full as soon as one field is not empty`() {
         // Arrange
-        board.placeSymbol('X', 0, 0)
+        val board = Board(
+            """
+            XOX
+            X.X
+            XOO
+            """.trimIndent()
+        )
 
         // Act
         val isFull = board.isFull
@@ -53,13 +112,27 @@ class BoardTest {
 
     @Test
     fun `an empty board is considered not full`() {
+        val board = Board(
+            """
+            ...
+            ...
+            ...
+            """.trimIndent()
+        )
+
         assertFalse(board.isFull)
     }
 
     @Test(expected = IllegalArgumentException::class)
     fun `placing a symbol on top of another symbol results in an error`() {
         // Arrange
-        board.placeSymbol('X', 0, 0)
+        board = Board(
+            """
+            X..
+            ...
+            ...
+            """.trimIndent()
+        )
 
         // Act
         board.placeSymbol('O', 0, 0)
@@ -68,9 +141,13 @@ class BoardTest {
     @Test
     fun `symbolFillsRow can detect when a symbol is present in every field of a given row`() {
         // Arrange
-        board.placeSymbol('X', 0, 0)
-        board.placeSymbol('X', 0, 1)
-        board.placeSymbol('X', 0, 2)
+        val board = Board(
+            """
+            XXX
+            OXO
+            OXX
+            """.trimIndent()
+        )
 
         // Act
         val symbolFillsRow = board.symbolFillsRow('X', rowIndex = 0)
@@ -82,8 +159,13 @@ class BoardTest {
     @Test
     fun `symbolFillsRow can detect when a symbol is not present in every field of a given row`() {
         // Arrange
-        board.placeSymbol('X', 0, 0)
-        board.placeSymbol('X', 0, 2)
+        val board = Board(
+            """
+            XOX
+            OXO
+            OXX
+            """.trimIndent()
+        )
 
         // Act
         val symbolFillsRow = board.symbolFillsRow('X', rowIndex = 0)
@@ -93,11 +175,123 @@ class BoardTest {
     }
 
     @Test
+    fun `symbolFillsAColumn can detect when a symbol is not present in every field of any column`() {
+        // Arrange
+        val board = Board(
+            """
+            XOX
+            OXO
+            OXX
+            """.trimIndent()
+        )
+
+        // Act
+        val symbolFillsAColumn = board.symbolFillsAColumn('X')
+
+        // Assert
+        assertFalse(symbolFillsAColumn)
+    }
+
+    @Test
+    fun `symbolFillsAColumn can detect when a symbol is present in every field of the second column`() {
+        // Arrange
+        val board = Board(
+            """
+            XXX
+            OXO
+            OXX
+            """.trimIndent()
+        )
+
+        // Act
+        val symbolFillsAColumn = board.symbolFillsAColumn('X')
+
+        // Assert
+        assertTrue(symbolFillsAColumn)
+    }
+
+    @Test
+    fun `symbolFillsAColumn can detect when a symbol is present in every field of the first column`() {
+        // Arrange
+        val board = Board(
+            """
+            XXX
+            XOO
+            XXX
+            """.trimIndent()
+        )
+
+        // Act
+        val symbolFillsAColumn1 = board.symbolFillsAColumn('X')
+
+        // Assert
+        assertTrue(symbolFillsAColumn1)
+    }
+
+    @Test
+    fun `symbolFillsARow can detect when a symbol is not present in every field of any row`() {
+        // Arrange
+        val board = Board(
+            """
+            XOX
+            XOO
+            XOO
+            """.trimIndent()
+        )
+
+        // Act
+        val symbolFillsARow1 = board.symbolFillsARow('X')
+
+        // Assert
+        assertFalse(symbolFillsARow1)
+    }
+
+    @Test
+    fun `symbolFillsARow can detect when a symbol is present in every field of the second row`() {
+        // Arrange
+        val board = Board(
+            """
+            XOX
+            XXX
+            XOO
+            """.trimIndent()
+        )
+
+        // Act
+        val symbolFillsARow1 = board.symbolFillsARow('X')
+
+        // Assert
+        assertTrue(symbolFillsARow1)
+    }
+
+    @Test
+    fun `symbolFillsARow can detect when a symbol is present in every field of the first row`() {
+        // Arrange
+        val board = Board(
+            """
+            XXX
+            XOX
+            XOO
+            """.trimIndent()
+        )
+
+        // Act
+        val symbolFillsARow1 = board.symbolFillsARow('X')
+
+        // Assert
+        assertTrue(symbolFillsARow1)
+    }
+
+    @Test
     fun `symbolFillsColumn can detect when a symbol is present in every field of a given column`() {
         // Arrange
-        board.placeSymbol('X', 0, 0)
-        board.placeSymbol('X', 1, 0)
-        board.placeSymbol('X', 2, 0)
+        val board = Board(
+            """
+            XOX
+            XOX
+            XXO
+            """.trimIndent()
+        )
 
         // Act
         val symbolFillsColumn = board.symbolFillsColumn('X', columnIndex = 0)
@@ -109,8 +303,13 @@ class BoardTest {
     @Test
     fun `symbolFillsColumn can detect when a symbol is not present in every field of a given column`() {
         // Arrange
-        board.placeSymbol('X', 0, 0)
-        board.placeSymbol('X', 0, 2)
+        val board = Board(
+            """
+            XOX
+            OOX
+            XXO
+            """.trimIndent()
+        )
 
         // Act
         val symbolFillsColumn = board.symbolFillsColumn('X', columnIndex = 0)
@@ -122,9 +321,13 @@ class BoardTest {
     @Test
     fun `symbolFillsFirstDiagonal can detect when a symbol is present in every field of a the first diagonal`() {
         // Arrange
-        board.placeSymbol('X', 0, 0)
-        board.placeSymbol('X', 1, 1)
-        board.placeSymbol('X', 2, 2)
+        val board = Board(
+            """
+            XOX
+            OXX
+            OOX
+            """.trimIndent()
+        )
 
         // Act
         val symbolFillsFirstDiagonal = board.symbolFillsFirstDiagonal('X')
@@ -136,8 +339,13 @@ class BoardTest {
     @Test
     fun `symbolFillsFirstDiagonal can detect when a symbol is not present in every field of the first diagonal`() {
         // Arrange
-        board.placeSymbol('X', 0, 0)
-        board.placeSymbol('X', 2, 2)
+        val board = Board(
+            """
+            XOX
+            OOX
+            OOX
+            """.trimIndent()
+        )
 
         // Act
         val symbolFillsFirstDiagonal = board.symbolFillsFirstDiagonal('X')
@@ -149,12 +357,16 @@ class BoardTest {
     @Test
     fun `symbolFillsSecondDiagonal can detect when a symbol is present in every field of the second diagonal`() {
         // Arrange
-        board.placeSymbol('X', 0, 2)
-        board.placeSymbol('X', 1, 1)
-        board.placeSymbol('X', 2, 0)
+        val board = Board(
+            """
+            XOO
+            OOX
+            OOX
+            """.trimIndent()
+        )
 
         // Act
-        val symbolFillsSecondDiagonal = board.symbolFillsSecondDiagonal('X')
+        val symbolFillsSecondDiagonal = board.symbolFillsSecondDiagonal('O')
 
         // Assert
         assertTrue(symbolFillsSecondDiagonal)
@@ -163,11 +375,16 @@ class BoardTest {
     @Test
     fun `symbolFillsSecondDiagonal can detect when a symbol is not present in every field of the second diagonal`() {
         // Arrange
-        board.placeSymbol('X', 0, 0)
-        board.placeSymbol('X', 0, 2)
+        val board = Board(
+            """
+            XOO
+            OXX
+            OOX
+            """.trimIndent()
+        )
 
         // Act
-        val symbolFillsSecondDiagonal = board.symbolFillsSecondDiagonal('X')
+        val symbolFillsSecondDiagonal = board.symbolFillsSecondDiagonal('O')
 
         // Assert
         assertFalse(symbolFillsSecondDiagonal)

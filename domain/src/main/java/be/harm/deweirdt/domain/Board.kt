@@ -1,24 +1,52 @@
 package be.harm.deweirdt.domain
 
-const val DIMENSION = 3
+import kotlin.math.floor
+import kotlin.math.sqrt
 
-class Board : Iterable<Field> {
+const val DEFAULT_DIMENSION = 3
 
-    override fun iterator(): Iterator<Field> {
-        return BoardIterator()
+class Board {
+    val dimension: Int
+
+    val fields: Array<Array<Field>>
+
+    constructor(dimension: Int = DEFAULT_DIMENSION) {
+        this.dimension = dimension
+        fields = Array(dimension) { Array(dimension) { Field() } }
+    }
+
+    /**
+     * Uses a String representation of a Board to create a Board object.
+     * String has to be a matrix-like representation of the Board, e.g.
+     * "X0X
+     *  ..X
+     *  OXO"
+     */
+    constructor(boardString: String) {
+        val stringWithoutNewLines = boardString.replace("\n", "")
+        val tempDimension = sqrt(stringWithoutNewLines.length.toDouble())
+        assert(tempDimension == floor(tempDimension)) { "Invalid number of elements in board representation" }
+        dimension = tempDimension.toInt()
+        fields = Array(dimension) { Array(dimension) { Field() } }
+        var nextFieldIndex = 0
+        for (rowIndex in 0 until dimension) {
+            for (columnIndex in 0 until dimension) {
+                fields[rowIndex][columnIndex].symbol = stringWithoutNewLines[nextFieldIndex++]
+            }
+        }
     }
 
     val isFull: Boolean
         get() {
-            for (field in this) {
-                if (field.isEmpty()) {
-                    return false
+            for (rowIndex in 0 until dimension) {
+                for (columnIndex in 0 until dimension) {
+                    if (fields[rowIndex][columnIndex].isEmpty()) {
+                        return false
+                    }
                 }
             }
             return true
         }
-
-    val fields = Array(DIMENSION) { Array(DIMENSION) { Field() } }
 
     operator fun get(row: Int, column: Int): Field {
         return fields[row][column]
@@ -33,25 +61,21 @@ class Board : Iterable<Field> {
         fields[row][column].symbol = symbol
     }
 
-    inner class BoardIterator : Iterator<Field> {
-        private var currentRowIndex = 0
-        private var currentColumnIndex = 0
-
-        override fun hasNext(): Boolean {
-            return currentRowIndex < DIMENSION - 1 && currentColumnIndex < DIMENSION - 1
-        }
-
-        override fun next(): Field {
-            return fields[currentRowIndex++][currentColumnIndex++]
-        }
-    }
-
     fun symbolFillsRow(symbol: Char, rowIndex: Int): Boolean {
         return fields[rowIndex].all { it.symbol == symbol }
     }
 
+    fun symbolFillsARow(symbol: Char): Boolean {
+        return (0 until dimension).any { rowIndex ->
+            symbolFillsRow(
+                symbol,
+                rowIndex
+            )
+        }
+    }
+
     fun symbolFillsColumn(symbol: Char, columnIndex: Int): Boolean {
-        for (i in 0 until DIMENSION) {
+        for (i in 0 until dimension) {
             if (fields[i][columnIndex].symbol != symbol) {
                 return false
             }
@@ -59,8 +83,17 @@ class Board : Iterable<Field> {
         return true
     }
 
+    fun symbolFillsAColumn(symbol: Char): Boolean {
+        return (0 until dimension).any { columnIndex ->
+            symbolFillsColumn(
+                symbol,
+                columnIndex
+            )
+        }
+    }
+
     fun symbolFillsFirstDiagonal(symbol: Char): Boolean {
-        for (i in 0 until DIMENSION) {
+        for (i in 0 until dimension) {
             if (fields[i][i].symbol != symbol) {
                 return false
             }
@@ -69,11 +102,27 @@ class Board : Iterable<Field> {
     }
 
     fun symbolFillsSecondDiagonal(symbol: Char): Boolean {
-        for (i in 0 until DIMENSION) {
-            if (fields[i][DIMENSION - 1 - i].symbol != symbol) {
+        for (i in 0 until dimension) {
+            if (fields[i][dimension - 1 - i].symbol != symbol) {
                 return false
             }
         }
         return true
+    }
+
+    fun symbolFilsADiagonal(symbol: Char): Boolean {
+        return symbolFillsFirstDiagonal(symbol) || symbolFillsSecondDiagonal(symbol)
+    }
+
+    override fun toString(): String {
+        val builder =
+            StringBuilder(dimension * dimension + dimension)
+        for (rowIndex in 0 until dimension) {
+            for (columnIndex in 0 until dimension) {
+                builder.append(fields[rowIndex][columnIndex].symbol)
+            }
+            builder.append('\n')
+        }
+        return builder.trim().toString()
     }
 }

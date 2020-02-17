@@ -1,6 +1,6 @@
 package be.harm.deweirdt.domain
 
-const val EMPTY_SYMBOL = ' '
+const val EMPTY_SYMBOL = '.'
 const val SYMBOL_PLAYER_X = 'X'
 const val SYMBOL_PLAYER_O = 'O'
 
