@@ -1,4 +1,4 @@
-package be.harm.deweirdt.domain
+package be.harm.deweirdt.domain.game
 
 private const val NUMBER_OF_PLAYERS = 2
 

@@ -1,5 +1,7 @@
 package be.harm.deweirdt.domain
 
+import be.harm.deweirdt.domain.game.Board
+import be.harm.deweirdt.domain.game.Game
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotEquals

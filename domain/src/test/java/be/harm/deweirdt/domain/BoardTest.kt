@@ -1,5 +1,7 @@
 package be.harm.deweirdt.domain
 
+import be.harm.deweirdt.domain.game.Board
+import be.harm.deweirdt.domain.game.Position
 import junit.framework.TestCase.assertFalse
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -388,5 +390,71 @@ class BoardTest {
 
         // Assert
         assertFalse(symbolFillsSecondDiagonal)
+    }
+
+    @Test
+    fun `emptyPositions returns all fields of the board when the board is empty`() {
+        // Arrange
+        val board = Board(
+            """
+            ...
+            ...
+            ...
+            """.trimIndent()
+        )
+
+        // Act
+        val emptyPositions = board.emptyFields
+
+        // Assert
+        assertEquals(
+            listOf(
+                Pair(0, 0), Pair(0, 1), Pair(0, 2),
+                Pair(1, 0), Pair(1, 1), Pair(1, 2),
+                Pair(2, 0), Pair(2, 1), Pair(2, 2)
+            ), emptyPositions
+        )
+    }
+
+    @Test
+    fun `emptyPositions returns an empty list board when the board is full`() {
+        // Arrange
+        val board = Board(
+            """
+            XXX
+            XXX
+            XXX
+            """.trimIndent()
+        )
+
+        // Act
+        val emptyPositions = board.emptyFields
+
+        // Assert
+        assertEquals(emptyList<Position>(), emptyPositions)
+    }
+
+    @Test
+    fun `emptyPositions returns all empty fields of the board`() {
+        // Arrange
+        val board = Board(
+            """
+            X..
+            .O.
+            .OX
+            """.trimIndent()
+        )
+
+        // Act
+        val emptyPositions = board.emptyFields
+
+        // Assert
+        assertEquals(
+            listOf(
+                Pair(0, 1), Pair(0, 2),
+                Pair(1, 0), Pair(1, 2),
+                Pair(2, 0)
+            ), emptyPositions
+        )
     }
 }

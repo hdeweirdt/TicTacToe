@@ -1,5 +1,6 @@
 package be.harm.deweirdt.domain
 
+import be.harm.deweirdt.domain.game.Field
 import java.lang.IllegalArgumentException
 import org.junit.Assert.assertEquals
 import org.junit.Before

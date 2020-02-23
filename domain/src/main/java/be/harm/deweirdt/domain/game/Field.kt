@@ -1,4 +1,4 @@
-package be.harm.deweirdt.domain
+package be.harm.deweirdt.domain.game
 
 const val EMPTY_SYMBOL = '.'
 const val SYMBOL_PLAYER_X = 'X'

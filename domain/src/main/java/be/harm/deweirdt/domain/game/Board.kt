@@ -1,4 +1,4 @@
-package be.harm.deweirdt.domain
+package be.harm.deweirdt.domain.game
 
 import kotlin.math.floor
 import kotlin.math.sqrt
@@ -113,6 +113,19 @@ class Board {
     fun symbolFilsADiagonal(symbol: Char): Boolean {
         return symbolFillsFirstDiagonal(symbol) || symbolFillsSecondDiagonal(symbol)
     }
+
+    val emptyFields: List<Position>
+        get() {
+            val emptyPositions = mutableListOf<Position>()
+            for (rowIndex in 0 until dimension) {
+                for (columnIndex in 0 until dimension) {
+                    if (fields[rowIndex][columnIndex].isEmpty()) {
+                        emptyPositions.add(Pair(rowIndex, columnIndex))
+                    }
+                }
+            }
+            return emptyPositions
+        }
 
     override fun toString(): String {
         val builder =
