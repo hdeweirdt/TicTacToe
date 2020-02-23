@@ -16,7 +16,7 @@ class FieldTest {
 
     @Test
     fun `a field is created as an empty field by default`() {
-        assertEquals(' ', field.symbol)
+        assertEquals('.', field.symbol)
     }
 
     @Test(expected = IllegalArgumentException::class)
