@@ -1,107 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/constraint_game"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/colorPrimary">
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="gameViewModel"
+            type="be.harm.deweirdt.tictactoe.game.GameViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraint_game"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimary">
 
 
-    <TextView
-        android:id="@+id/lbl_game_turn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textColor="@color/textOnPrimary"
-        app:layout_constraintBottom_toTopOf="@+id/lbl_game_winner"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/table_game_field"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Player X's turn" />
+        <TextView
+            android:id="@+id/lbl_game_turn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="32dp"
+            android:text="@{String.format(@string/lbl_game_currentPlayer, gameViewModel.currentPlayerName)}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="@color/textOnPrimary"
+            app:layout_constraintBottom_toTopOf="@+id/lbl_game_winner"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/table_game_field"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Player X's turn" />
 
-    <TableLayout
-        android:id="@+id/table_game_field"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:background="@drawable/background_game"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/lbl_game_turn"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        <TableLayout
+            android:id="@+id/table_game_field"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:background="@drawable/background_game"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/lbl_game_turn"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <TableRow>
+            <TableRow>
 
-            <TextView
-                android:id="@+id/lbl_field_row0_column0"
-                style="@style/Field.TopStart"
-                android:text="@{gameViewModel.fields[0][0]}"
-                tools:text="X" />
+                <TextView
+                    android:id="@+id/lbl_field_row0_column0"
+                    style="@style/Field.TopStart"
+                    android:text="@{gameViewModel.fields[0][0]}"
+                    tools:text="X" />
 
-            <TextView
-                android:id="@+id/lbl_field_row0_column1"
-                style="@style/Field.TopMiddle"
-                android:text="@{gameViewModel.fields[0][1]}" />
+                <TextView
+                    android:id="@+id/lbl_field_row0_column1"
+                    style="@style/Field.TopMiddle"
+                    android:text="@{gameViewModel.fields[0][1]}" />
 
-            <TextView
-                android:id="@+id/lbl_field_row0_column2"
-                style="@style/Field.TopEnd"
-                android:text="@{gameViewModel.fields[0][2]}" />
-        </TableRow>
+                <TextView
+                    android:id="@+id/lbl_field_row0_column2"
+                    style="@style/Field.TopEnd"
+                    android:text="@{gameViewModel.fields[0][2]}" />
+            </TableRow>
 
-        <TableRow>
+            <TableRow>
 
-            <TextView
-                android:id="@+id/lbl_field_row1_column0"
-                style="@style/Field.MiddleStart"
-                android:text="@{gameViewModel.fields[1][0]}" />
+                <TextView
+                    android:id="@+id/lbl_field_row1_column0"
+                    style="@style/Field.MiddleStart"
+                    android:text="@{gameViewModel.fields[1][0]}" />
 
-            <TextView
-                android:id="@+id/lbl_field_row1_column1"
-                style="@style/Field.Middle"
-                android:text="@{gameViewModel.fields[1][1]}"
-                tools:text="X" />
+                <TextView
+                    android:id="@+id/lbl_field_row1_column1"
+                    style="@style/Field.Middle"
+                    android:text="@{gameViewModel.fields[1][1]}"
+                    tools:text="X" />
 
-            <TextView
-                android:id="@+id/lbl_field_row1_column2"
-                style="@style/Field.MiddleEnd"
-                android:text="@{gameViewModel.fields[1][2]}"
-                tools:text="O" />
-        </TableRow>
+                <TextView
+                    android:id="@+id/lbl_field_row1_column2"
+                    style="@style/Field.MiddleEnd"
+                    android:text="@{gameViewModel.fields[1][2]}"
+                    tools:text="O" />
+            </TableRow>
 
-        <TableRow>
+            <TableRow>
 
-            <TextView
-                android:id="@+id/lbl_field_row2_column0"
-                style="@style/Field.BottomStart"
-                android:text="@{gameViewModel.fields[2][0]}" />
+                <TextView
+                    android:id="@+id/lbl_field_row2_column0"
+                    style="@style/Field.BottomStart"
+                    android:text="@{gameViewModel.fields[2][0]}" />
 
-            <TextView
-                android:id="@+id/lbl_field_row2_column1"
-                style="@style/Field.BottomMiddle"
-                android:text="@{gameViewModel.fields[2][1]}"
-                tools:text="O" />
+                <TextView
+                    android:id="@+id/lbl_field_row2_column1"
+                    style="@style/Field.BottomMiddle"
+                    android:text="@{gameViewModel.fields[2][1]}"
+                    tools:text="O" />
 
-            <TextView
-                android:id="@+id/lbl_field_row2_column2"
-                style="@style/Field.BottomEnd"
-                android:text="@{gameViewModel.fields[2][2]}"
-                tools:text="X" />
-        </TableRow>
-    </TableLayout>
+                <TextView
+                    android:id="@+id/lbl_field_row2_column2"
+                    style="@style/Field.BottomEnd"
+                    android:text="@{gameViewModel.fields[2][2]}"
+                    tools:text="X" />
+            </TableRow>
+        </TableLayout>
 
-    <TextView
-        android:id="@+id/lbl_game_winner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textColor="@color/textOnPrimary"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/lbl_game_turn"
-        app:layout_constraintStart_toStartOf="@+id/lbl_game_turn"
-        app:layout_constraintTop_toBottomOf="@id/lbl_game_turn"
-        tools:text="Player X has won!" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/lbl_game_winner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{String.format(@string/lbl_game_winningPlayer, gameViewModel.winningPlayerName)}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="@color/textOnPrimary"
+            android:visibility="@{gameViewModel.winningPlayerVisible? View.VISIBLE : View.INVISIBLE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/lbl_game_turn"
+            app:layout_constraintStart_toStartOf="@+id/lbl_game_turn"
+            app:layout_constraintTop_toBottomOf="@id/lbl_game_turn"
+            tools:text="Player X has won!" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
