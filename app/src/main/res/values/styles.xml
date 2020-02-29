@@ -19,4 +19,64 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="Field.TopStart">
+        <item name="android:layout_marginEnd">@dimen/border_game_table</item>
+        <item name="android:layout_marginBottom">@dimen/border_game_table</item>
+        <item name="android:background">@color/colorPrimary</item>
+    </style>
+
+    <style name="Field.TopMiddle">
+        <item name="android:layout_marginStart">@dimen/border_game_table</item>
+        <item name="android:layout_marginEnd">@dimen/border_game_table</item>
+        <item name="android:layout_marginBottom">@dimen/border_game_table</item>
+        <item name="android:background">@color/colorPrimary</item>
+    </style>
+
+    <style name="Field.TopEnd">
+        <item name="android:layout_marginStart">@dimen/border_game_table</item>
+        <item name="android:layout_marginBottom">@dimen/border_game_table</item>
+        <item name="android:background">@color/colorPrimary</item>
+    </style>
+
+    <style name="Field.MiddleStart">
+        <item name="android:layout_marginTop">@dimen/border_game_table</item>
+        <item name="android:layout_marginEnd">@dimen/border_game_table</item>
+        <item name="android:layout_marginBottom">@dimen/border_game_table</item>
+        <item name="android:background">@color/colorPrimary</item>
+    </style>
+
+    <style name="Field.Middle">
+        <item name="android:layout_marginStart">@dimen/border_game_table</item>
+        <item name="android:layout_marginTop">@dimen/border_game_table</item>
+        <item name="android:layout_marginEnd">@dimen/border_game_table</item>
+        <item name="android:layout_marginBottom">@dimen/border_game_table</item>
+        <item name="android:background">@color/colorPrimary</item>
+    </style>
+
+    <style name="Field.BottomStart">
+        <item name="android:layout_marginTop">@dimen/border_game_table</item>
+        <item name="android:layout_marginEnd">@dimen/border_game_table</item>
+        <item name="android:background">@color/colorPrimary</item>
+    </style>
+
+    <style name="Field.BottomMiddle">
+        <item name="android:layout_marginStart">@dimen/border_game_table</item>
+        <item name="android:layout_marginTop">@dimen/border_game_table</item>
+        <item name="android:layout_marginEnd">@dimen/border_game_table</item>
+        <item name="android:background">@color/colorPrimary</item>
+    </style>
+
+    <style name="Field.BottomEnd">
+        <item name="android:layout_marginStart">@dimen/border_game_table</item>
+        <item name="android:layout_marginTop">@dimen/border_game_table</item>
+        <item name="android:background">@color/colorPrimary</item>
+    </style>
+
+    <style name="Field.MiddleEnd">
+        <item name="android:layout_marginStart">@dimen/border_game_table</item>
+        <item name="android:layout_marginTop">@dimen/border_game_table</item>
+        <item name="android:layout_marginBottom">@dimen/border_game_table</item>
+        <item name="android:background">@color/colorPrimary</item>
+    </style>
+
 </resources>
