@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">TicTacToe</string>
+    <string name="lbl_game_currentPlayer">Player %1$s\'s turn</string>
+    <string name="lbl_game_winningPlayer">Player %1$s\ has won!</string>
 </resources>
