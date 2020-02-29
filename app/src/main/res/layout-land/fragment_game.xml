@@ -27,6 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
+        android:background="@drawable/background_game"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/lbl_game_turn"
         app:layout_constraintStart_toStartOf="parent"
@@ -36,32 +37,38 @@
 
             <TextView
                 android:id="@+id/lbl_field_row0_column0"
-                style="@style/Field"
+                style="@style/Field.TopStart"
+                android:text="@{gameViewModel.fields[0][0]}"
                 tools:text="X" />
 
             <TextView
                 android:id="@+id/lbl_field_row0_column1"
-                style="@style/Field" />
+                style="@style/Field.TopMiddle"
+                android:text="@{gameViewModel.fields[0][1]}" />
 
             <TextView
                 android:id="@+id/lbl_field_row0_column2"
-                style="@style/Field" />
+                style="@style/Field.TopEnd"
+                android:text="@{gameViewModel.fields[0][2]}" />
         </TableRow>
 
         <TableRow>
 
             <TextView
                 android:id="@+id/lbl_field_row1_column0"
-                style="@style/Field" />
+                style="@style/Field.MiddleStart"
+                android:text="@{gameViewModel.fields[1][0]}" />
 
             <TextView
                 android:id="@+id/lbl_field_row1_column1"
-                style="@style/Field"
+                style="@style/Field.Middle"
+                android:text="@{gameViewModel.fields[1][1]}"
                 tools:text="X" />
 
             <TextView
                 android:id="@+id/lbl_field_row1_column2"
-                style="@style/Field"
+                style="@style/Field.MiddleEnd"
+                android:text="@{gameViewModel.fields[1][2]}"
                 tools:text="O" />
         </TableRow>
 
@@ -69,16 +76,19 @@
 
             <TextView
                 android:id="@+id/lbl_field_row2_column0"
-                style="@style/Field" />
+                style="@style/Field.BottomStart"
+                android:text="@{gameViewModel.fields[2][0]}" />
 
             <TextView
                 android:id="@+id/lbl_field_row2_column1"
-                style="@style/Field"
+                style="@style/Field.BottomMiddle"
+                android:text="@{gameViewModel.fields[2][1]}"
                 tools:text="O" />
 
             <TextView
                 android:id="@+id/lbl_field_row2_column2"
-                style="@style/Field"
+                style="@style/Field.BottomEnd"
+                android:text="@{gameViewModel.fields[2][2]}"
                 tools:text="X" />
         </TableRow>
     </TableLayout>
