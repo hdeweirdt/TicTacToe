@@ -26,13 +26,12 @@
             android:layout_marginTop="32dp"
             android:layout_marginBottom="32dp"
             android:text="@{String.format(@string/lbl_game_currentPlayer, gameViewModel.currentPlayerName)}"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:textColor="@color/textOnPrimary"
             app:layout_constraintBottom_toTopOf="@+id/table_game_field"
             app:layout_constraintEnd_toEndOf="@id/table_game_field"
             app:layout_constraintStart_toStartOf="@id/table_game_field"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Player X's turn" />
+            tools:text="Player X's turn"
+            style="@style/label_game_state" />
 
         <TableLayout
             android:id="@+id/table_game_field"
@@ -109,8 +108,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{String.format(@string/lbl_game_winningPlayer, gameViewModel.winningPlayerName)}"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:textColor="@color/textOnPrimary"
+            style="@style/label_game_state"
             android:visibility="@{gameViewModel.winningPlayerVisible? View.VISIBLE : View.INVISIBLE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@id/table_game_field"

@@ -79,4 +79,9 @@
         <item name="android:background">@color/colorPrimary</item>
     </style>
 
+    <style name="label_game_state">
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Large</item>
+        <item name="android:textColor">@color/textOnPrimary</item>
+    </style>
+
 </resources>
