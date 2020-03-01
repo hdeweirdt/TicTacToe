@@ -10,7 +10,6 @@
         <variable
             name="gameViewModel"
             type="be.harm.deweirdt.tictactoe.game.GameViewModel" />
-
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -27,90 +26,22 @@
             android:layout_marginTop="32dp"
             android:layout_marginBottom="32dp"
             android:text="@{String.format(@string/lbl_game_currentPlayer, gameViewModel.currentPlayerName)}"
-            app:layout_constraintBottom_toTopOf="@+id/table_game_field"
-            app:layout_constraintEnd_toEndOf="@id/table_game_field"
-            app:layout_constraintStart_toStartOf="@id/table_game_field"
+            app:layout_constraintBottom_toTopOf="@+id/game_field"
+            app:layout_constraintEnd_toEndOf="@id/game_field"
+            app:layout_constraintStart_toStartOf="@id/game_field"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Player X's turn" />
 
-        <TableLayout
-            android:id="@+id/table_game_field"
+        <include
+            android:id="@+id/game_field"
+            bind:gameViewModel="@{gameViewModel}"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/background_game"
+            layout="@layout/layout_game_field"
             app:layout_constraintBottom_toTopOf="@+id/lbl_game_winner"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/lbl_game_turn">
-
-            <TableRow>
-
-                <TextView
-                    android:id="@+id/lbl_field_row0_column0"
-                    style="@style/Field.TopStart"
-                    android:onClick="@{() -> gameViewModel.positionChosen(0,0)}"
-                    android:text="@{gameViewModel.fields[0][0]}"
-                    tools:text="X" />
-
-                <TextView
-                    android:id="@+id/lbl_field_row0_column1"
-                    style="@style/Field.TopMiddle"
-                    android:onClick="@{() -> gameViewModel.positionChosen(0,1)}"
-                    android:text="@{gameViewModel.fields[0][1]}" />
-
-                <TextView
-                    android:id="@+id/lbl_field_row0_column2"
-                    style="@style/Field.TopEnd"
-                    android:onClick="@{() -> gameViewModel.positionChosen(0,2)}"
-                    android:text="@{gameViewModel.fields[0][2]}" />
-            </TableRow>
-
-            <TableRow>
-
-                <TextView
-                    android:id="@+id/lbl_field_row1_column0"
-                    style="@style/Field.MiddleStart"
-                    android:onClick="@{() -> gameViewModel.positionChosen(1,0)}"
-                    android:text="@{gameViewModel.fields[1][0]}" />
-
-                <TextView
-                    android:id="@+id/lbl_field_row1_column1"
-                    style="@style/Field.Middle"
-                    android:onClick="@{() -> gameViewModel.positionChosen(1,1)}"
-                    android:text="@{gameViewModel.fields[1][1]}"
-                    tools:text="X" />
-
-                <TextView
-                    android:id="@+id/lbl_field_row1_column2"
-                    style="@style/Field.MiddleEnd"
-                    android:onClick="@{() -> gameViewModel.positionChosen(1,2)}"
-                    android:text="@{gameViewModel.fields[1][2]}"
-                    tools:text="O" />
-            </TableRow>
-
-            <TableRow>
-
-                <TextView
-                    android:id="@+id/lbl_field_row2_column0"
-                    style="@style/Field.BottomStart"
-                    android:onClick="@{() -> gameViewModel.positionChosen(2,0)}"
-                    android:text="@{gameViewModel.fields[2][0]}" />
-
-                <TextView
-                    android:id="@+id/lbl_field_row2_column1"
-                    style="@style/Field.BottomMiddle"
-                    android:onClick="@{() -> gameViewModel.positionChosen(2,1)}"
-                    android:text="@{gameViewModel.fields[2][1]}"
-                    tools:text="O" />
-
-                <TextView
-                    android:id="@+id/lbl_field_row2_column2"
-                    style="@style/Field.BottomEnd"
-                    android:onClick="@{() -> gameViewModel.positionChosen(2,2)}"
-                    android:text="@{gameViewModel.fields[2][2]}"
-                    tools:text="X" />
-            </TableRow>
-        </TableLayout>
+            app:layout_constraintTop_toBottomOf="@id/lbl_game_turn" />
 
         <TextView
             android:id="@+id/lbl_game_draw"
@@ -120,9 +51,9 @@
             android:text="@string/lbl_game_draw"
             android:visibility="@{gameViewModel.isDraw? View.VISIBLE : View.INVISIBLE}"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@id/table_game_field"
-            app:layout_constraintStart_toStartOf="@id/table_game_field"
-            app:layout_constraintTop_toBottomOf="@id/table_game_field" />
+            app:layout_constraintEnd_toEndOf="@id/game_field"
+            app:layout_constraintStart_toStartOf="@id/game_field"
+            app:layout_constraintTop_toBottomOf="@id/game_field" />
 
         <TextView
             android:id="@+id/lbl_game_winner"
@@ -132,9 +63,9 @@
             android:text="@{String.format(@string/lbl_game_winningPlayer, gameViewModel.winningPlayerName)}"
             android:visibility="@{gameViewModel.winningPlayerVisible? View.VISIBLE : View.INVISIBLE}"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@id/table_game_field"
-            app:layout_constraintStart_toStartOf="@id/table_game_field"
-            app:layout_constraintTop_toBottomOf="@id/table_game_field"
+            app:layout_constraintEnd_toEndOf="@id/game_field"
+            app:layout_constraintStart_toStartOf="@id/game_field"
+            app:layout_constraintTop_toBottomOf="@id/game_field"
             tools:text="Player X has won!" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="gameViewModel"
+            type="be.harm.deweirdt.tictactoe.game.GameViewModel" />
+    </data>
+
+    <TableLayout
+        android:id="@+id/table_game_field"
+        android:background="@drawable/background_game"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        tools:showIn="@layout/fragment_game">
+
+        <TableRow>
+
+            <TextView
+                android:id="@+id/lbl_field_row0_column0"
+                style="@style/Field.TopStart"
+                android:onClick="@{() -> gameViewModel.positionChosen(0,0)}"
+                android:text="@{gameViewModel.fields[0][0]}"
+                tools:text="X" />
+
+            <TextView
+                android:id="@+id/lbl_field_row0_column1"
+                style="@style/Field.TopMiddle"
+                android:onClick="@{() -> gameViewModel.positionChosen(0,1)}"
+                android:text="@{gameViewModel.fields[0][1]}" />
+
+            <TextView
+                android:id="@+id/lbl_field_row0_column2"
+                style="@style/Field.TopEnd"
+                android:onClick="@{() -> gameViewModel.positionChosen(0,2)}"
+                android:text="@{gameViewModel.fields[0][2]}" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:id="@+id/lbl_field_row1_column0"
+                style="@style/Field.MiddleStart"
+                android:onClick="@{() -> gameViewModel.positionChosen(1,0)}"
+                android:text="@{gameViewModel.fields[1][0]}" />
+
+            <TextView
+                android:id="@+id/lbl_field_row1_column1"
+                style="@style/Field.Middle"
+                android:onClick="@{() -> gameViewModel.positionChosen(1,1)}"
+                android:text="@{gameViewModel.fields[1][1]}"
+                tools:text="X" />
+
+            <TextView
+                android:id="@+id/lbl_field_row1_column2"
+                style="@style/Field.MiddleEnd"
+                android:onClick="@{() -> gameViewModel.positionChosen(1,2)}"
+                android:text="@{gameViewModel.fields[1][2]}"
+                tools:text="O" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:id="@+id/lbl_field_row2_column0"
+                style="@style/Field.BottomStart"
+                android:onClick="@{() -> gameViewModel.positionChosen(2,0)}"
+                android:text="@{gameViewModel.fields[2][0]}" />
+
+            <TextView
+                android:id="@+id/lbl_field_row2_column1"
+                style="@style/Field.BottomMiddle"
+                android:onClick="@{() -> gameViewModel.positionChosen(2,1)}"
+                android:text="@{gameViewModel.fields[2][1]}"
+                tools:text="O" />
+
+            <TextView
+                android:id="@+id/lbl_field_row2_column2"
+                style="@style/Field.BottomEnd"
+                android:onClick="@{() -> gameViewModel.positionChosen(2,2)}"
+                android:text="@{gameViewModel.fields[2][2]}"
+                tools:text="X" />
+        </TableRow>
+    </TableLayout>
+</layout>
+
+        

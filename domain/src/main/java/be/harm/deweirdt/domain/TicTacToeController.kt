@@ -38,5 +38,4 @@ class TicTacToeController {
     fun getWinningPlayerSymbol(): Char? {
         return game.winningPlayer?.symbol
     }
-
 }
