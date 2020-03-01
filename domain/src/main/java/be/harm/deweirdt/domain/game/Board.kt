@@ -5,7 +5,7 @@ import kotlin.math.sqrt
 
 const val DEFAULT_DIMENSION = 3
 
-class Board {
+internal class Board {
     val dimension: Int
 
     val fields: Array<Array<Field>>

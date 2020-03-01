@@ -4,7 +4,7 @@ import be.harm.deweirdt.domain.game.Board
 import be.harm.deweirdt.domain.game.Game
 import be.harm.deweirdt.domain.game.Position
 
-class HardAIPlayer(
+internal class HardAIPlayer(
     private val game: Game
 ) : AIPlayer {
 

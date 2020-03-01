@@ -2,7 +2,7 @@ package be.harm.deweirdt.domain.AI
 
 import be.harm.deweirdt.domain.game.Board
 
-object BoardEvaluator {
+internal object BoardEvaluator {
     // TODO: memoization?
 
     /**

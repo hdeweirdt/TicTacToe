@@ -2,7 +2,7 @@ package be.harm.deweirdt.domain.game
 
 private const val NUMBER_OF_PLAYERS = 2
 
-class Game {
+internal class Game {
 
     constructor() {
         this.board = Board()
@@ -18,6 +18,13 @@ class Game {
     val isOver: Boolean
         get() {
             return firstPlayerWon || secondPlayerWon || board.isFull
+        }
+
+    val winningPlayer: Player?
+        get() {
+            if (firstPlayerWon) return players[0]
+            if (secondPlayerWon) return players[1]
+            return null
         }
 
     private val secondPlayerWon
@@ -50,10 +57,15 @@ class Game {
      * Also switches [currentPlayer] to the next [Player].
      *
      * @throws IllegalArgumentException when the location already has a non-empty symbol.
+     * @throws IllegalStateException when the game was already finished
      */
     fun currentPlayerMove(position: Position) {
-        board.placeSymbol(currentPlayer.symbol, position)
-        nextPlayer()
+        if (isOver) {
+            throw IllegalStateException("Game is already over, you can't make any more moves.")
+        } else {
+            board.placeSymbol(currentPlayer.symbol, position)
+            nextPlayer()
+        }
     }
 
     // For testing purposes only
