@@ -1,7 +1,11 @@
 package be.harm.deweirdt.tictactoe.game
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import be.harm.deweirdt.domain.TicTacToeController
 import be.harm.deweirdt.tictactoe.getOrAwaitValue
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.verify
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -15,14 +19,20 @@ class GameViewModelTest {
 
     private lateinit var viewModel: GameViewModel
 
+    private val controller = mockk<TicTacToeController>(relaxed = true)
+
     @Before
     fun setUp() {
-        viewModel = GameViewModel()
+        viewModel = GameViewModel(controller)
     }
 
     @Test
-    fun `the winning player text is invisible when the winning player is not set`() {
+    fun `the winning player text is invisible when there is no winning player`() {
+        // Arrange
+        every { controller.getWinningPlayerSymbol() } returns null
+
         // Act
+        viewModel.updateUIState()
         val isVisible = viewModel.winningPlayerVisible.getOrAwaitValue()
 
         // Assert
@@ -30,14 +40,26 @@ class GameViewModelTest {
     }
 
     @Test
-    fun `the winning player text is visible when the winning player is set`() {
+    fun `the winning player text is visible when the winning player is known`() {
         // Arrange
-        viewModel.setWinningPlayer("X")
+        every { controller.getWinningPlayerSymbol() } returns 'X'
 
         // Act
+        viewModel.updateUIState()
         val isVisible = viewModel.winningPlayerVisible.getOrAwaitValue()
 
         // Assert
         assertTrue(isVisible)
+    }
+
+    @Test
+    fun `the position chosen by the player is passed to the controller`() {
+        // Arrange
+
+        // Act
+        viewModel.positionChosen(1, 1)
+
+        // Assert
+        verify { controller.currentPlayerMove(1, 1) }
     }
 }

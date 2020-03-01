@@ -21,6 +21,7 @@
 
         <TextView
             android:id="@+id/lbl_game_turn"
+            style="@style/label_game_state"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
@@ -30,8 +31,7 @@
             app:layout_constraintEnd_toEndOf="@id/table_game_field"
             app:layout_constraintStart_toStartOf="@id/table_game_field"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Player X's turn"
-            style="@style/label_game_state" />
+            tools:text="Player X's turn" />
 
         <TableLayout
             android:id="@+id/table_game_field"
@@ -48,17 +48,20 @@
                 <TextView
                     android:id="@+id/lbl_field_row0_column0"
                     style="@style/Field.TopStart"
+                    android:onClick="@{() -> gameViewModel.positionChosen(0,0)}"
                     android:text="@{gameViewModel.fields[0][0]}"
                     tools:text="X" />
 
                 <TextView
                     android:id="@+id/lbl_field_row0_column1"
                     style="@style/Field.TopMiddle"
+                    android:onClick="@{() -> gameViewModel.positionChosen(0,1)}"
                     android:text="@{gameViewModel.fields[0][1]}" />
 
                 <TextView
                     android:id="@+id/lbl_field_row0_column2"
                     style="@style/Field.TopEnd"
+                    android:onClick="@{() -> gameViewModel.positionChosen(0,2)}"
                     android:text="@{gameViewModel.fields[0][2]}" />
             </TableRow>
 
@@ -67,17 +70,20 @@
                 <TextView
                     android:id="@+id/lbl_field_row1_column0"
                     style="@style/Field.MiddleStart"
+                    android:onClick="@{() -> gameViewModel.positionChosen(1,0)}"
                     android:text="@{gameViewModel.fields[1][0]}" />
 
                 <TextView
                     android:id="@+id/lbl_field_row1_column1"
                     style="@style/Field.Middle"
+                    android:onClick="@{() -> gameViewModel.positionChosen(1,1)}"
                     android:text="@{gameViewModel.fields[1][1]}"
                     tools:text="X" />
 
                 <TextView
                     android:id="@+id/lbl_field_row1_column2"
                     style="@style/Field.MiddleEnd"
+                    android:onClick="@{() -> gameViewModel.positionChosen(1,2)}"
                     android:text="@{gameViewModel.fields[1][2]}"
                     tools:text="O" />
             </TableRow>
@@ -87,28 +93,43 @@
                 <TextView
                     android:id="@+id/lbl_field_row2_column0"
                     style="@style/Field.BottomStart"
+                    android:onClick="@{() -> gameViewModel.positionChosen(2,0)}"
                     android:text="@{gameViewModel.fields[2][0]}" />
 
                 <TextView
                     android:id="@+id/lbl_field_row2_column1"
                     style="@style/Field.BottomMiddle"
+                    android:onClick="@{() -> gameViewModel.positionChosen(2,1)}"
                     android:text="@{gameViewModel.fields[2][1]}"
                     tools:text="O" />
 
                 <TextView
                     android:id="@+id/lbl_field_row2_column2"
                     style="@style/Field.BottomEnd"
+                    android:onClick="@{() -> gameViewModel.positionChosen(2,2)}"
                     android:text="@{gameViewModel.fields[2][2]}"
                     tools:text="X" />
             </TableRow>
         </TableLayout>
 
         <TextView
+            android:id="@+id/lbl_game_draw"
+            style="@style/label_game_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/lbl_game_draw"
+            android:visibility="@{gameViewModel.isDraw? View.VISIBLE : View.INVISIBLE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/table_game_field"
+            app:layout_constraintStart_toStartOf="@id/table_game_field"
+            app:layout_constraintTop_toBottomOf="@id/table_game_field" />
+
+        <TextView
             android:id="@+id/lbl_game_winner"
+            style="@style/label_game_state"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{String.format(@string/lbl_game_winningPlayer, gameViewModel.winningPlayerName)}"
-            style="@style/label_game_state"
             android:visibility="@{gameViewModel.winningPlayerVisible? View.VISIBLE : View.INVISIBLE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@id/table_game_field"

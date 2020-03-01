@@ -4,8 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import be.harm.deweirdt.domain.TicTacToeController
 import be.harm.deweirdt.tictactoe.databinding.FragmentGameBinding
 
 class GameFragment : Fragment() {
@@ -20,9 +23,19 @@ class GameFragment : Fragment() {
     ): View? {
         binding = FragmentGameBinding.inflate(inflater)
 
-        gameViewModel = ViewModelProvider(this).get(GameViewModel::class.java)
+        val gameViewModelFactory = GameViewModel.GameViewModelFactory(TicTacToeController())
+        gameViewModel = ViewModelProvider(this, gameViewModelFactory).get(GameViewModel::class.java)
         binding.gameViewModel = gameViewModel
+        binding.lifecycleOwner = this
+
+        startListeners()
 
         return binding.root
+    }
+
+    private fun startListeners() {
+        gameViewModel.errorMessage.observe(viewLifecycleOwner, Observer { errorMessage ->
+            Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
+        })
     }
 }
