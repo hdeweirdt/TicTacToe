@@ -28,6 +28,10 @@ class TicTacToeController {
         return game.isOver
     }
 
+    fun isDraw(): Boolean {
+        return game.isDraw
+    }
+
     /**
      * Returns the symbol of the winning player, and null if there is no winning player yet.
      */
