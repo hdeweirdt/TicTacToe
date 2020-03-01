@@ -15,13 +15,13 @@ internal class HardAIPlayer(
         var bestScoreSoFar: Int = Int.MIN_VALUE
         var bestMoveSoFar: Position? = null
         for (position in game.board.emptyFields) {
-            val newBoard = game.board.copy()
-            newBoard.placeSymbol(game.currentPlayer.symbol, position)
+            game.board.placeSymbol(game.currentPlayer.symbol, position)
             val moveValue = minimax(game.board, 0, isMaximizingPlayer = false)
             if (moveValue > bestScoreSoFar) {
                 bestScoreSoFar = moveValue
                 bestMoveSoFar = position
             }
+            game.board.removeSymbol(position)
         }
         return bestMoveSoFar!!
     }
@@ -39,27 +39,23 @@ internal class HardAIPlayer(
         if (isMaximizingPlayer) {
             bestScoreSoFar = Int.MIN_VALUE
             for (position in board.emptyFields) {
-                println("maximizer trying $position from ${board.emptyFields}")
-                val newBoard = board.copy()
-                newBoard.placeSymbol(game.currentPlayer.symbol, position)
-                val newScore = minimax(newBoard, depth + 1, isMaximizingPlayer.not())
-                println("Score found for $position: $newScore, bestSoFar $bestScoreSoFar")
+                board.placeSymbol(game.currentPlayer.symbol, position)
+                val newScore = minimax(board, depth + 1, isMaximizingPlayer.not())
                 if (newScore > bestScoreSoFar) {
                     bestScoreSoFar = newScore
                 }
+                board.removeSymbol(position)
             }
             return bestScoreSoFar
         } else {
             bestScoreSoFar = Int.MAX_VALUE
             for (position in board.emptyFields) {
-                println("minimizer trying $position from ${board.emptyFields}")
-                val newBoard = board.copy()
-                newBoard.placeSymbol(game.otherPlayer.symbol, position)
-                val newScore = minimax(newBoard, depth + 1, isMaximizingPlayer.not())
-                println("Score found for $position: $newScore, bestSoFar $bestScoreSoFar")
+                board.placeSymbol(game.currentPlayer.symbol, position)
+                val newScore = minimax(board, depth + 1, isMaximizingPlayer.not())
                 if (newScore < bestScoreSoFar) {
                     bestScoreSoFar = newScore
                 }
+                board.removeSymbol(position)
             }
             return bestScoreSoFar
         }

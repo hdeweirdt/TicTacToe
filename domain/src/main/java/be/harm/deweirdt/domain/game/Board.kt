@@ -153,4 +153,9 @@ internal class Board {
     fun copy(): Board {
         return Board(fields)
     }
+
+    fun removeSymbol(position: Position) {
+        fields[position.row][position.column] = Field()
+
+    }
 }
