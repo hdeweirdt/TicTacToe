@@ -1,4 +1,4 @@
-package be.harm.deweirdt.domain.AI
+package AI
 
 import be.harm.deweirdt.domain.game.Board
 import org.junit.Assert.assertTrue
@@ -19,7 +19,7 @@ class EasyAIPlayerTest {
             """.trimIndent()
         )
 
-        // Repeat many times because the be.harm.deweirdt.domain.AI is inherently random
+        // Repeat many times because the AI is inherently random
         repeat(100) {
             // Act
             val move = player.getNextMove(board)

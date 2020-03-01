@@ -1,4 +1,4 @@
-package be.harm.deweirdt.domain.AI
+package AI
 
 import be.harm.deweirdt.domain.game.Board
 
