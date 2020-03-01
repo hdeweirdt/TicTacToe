@@ -1,7 +1,6 @@
 package be.harm.deweirdt.domain
 
 import be.harm.deweirdt.domain.game.Field
-import java.lang.IllegalArgumentException
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -18,14 +17,5 @@ class FieldTest {
     @Test
     fun `a field is created as an empty field by default`() {
         assertEquals('.', field.symbol)
-    }
-
-    @Test(expected = IllegalArgumentException::class)
-    fun `overwriting a non-empty symbol results in an error`() {
-        // Arrange
-        field.symbol = 'O'
-
-        // Act
-        field.symbol = 'O'
     }
 }

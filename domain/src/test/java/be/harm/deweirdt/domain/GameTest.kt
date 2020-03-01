@@ -2,10 +2,8 @@ package be.harm.deweirdt.domain
 
 import be.harm.deweirdt.domain.game.Board
 import be.harm.deweirdt.domain.game.Game
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertFalse
-import org.junit.Assert.assertNotEquals
-import org.junit.Assert.assertTrue
+import be.harm.deweirdt.domain.game.Position
+import org.junit.Assert.*
 import org.junit.Test
 
 class GameTest {
@@ -37,7 +35,7 @@ class GameTest {
         val firstPlayer = game.currentPlayer
 
         // Act
-        game.currentPlayerMove(0, 0)
+        game.currentPlayerMove(Position(0, 0))
 
         // Assert
         assertNotEquals(firstPlayer, game.currentPlayer)
@@ -50,7 +48,7 @@ class GameTest {
 
         // Act
         val currentPlayerSymbol = game.currentPlayer.symbol
-        game.currentPlayerMove(0, 0)
+        game.currentPlayerMove(Position(0, 0))
 
         // Assert
         assertEquals(currentPlayerSymbol, game.board[0, 0].symbol)
@@ -68,10 +66,8 @@ class GameTest {
         )
         game = Game(board)
 
-        game.currentPlayerMove(0, 0)
-
         // Act
-        game.currentPlayerMove(0, 0)
+        game.currentPlayerMove(Position(0, 0))
     }
 
     @Test

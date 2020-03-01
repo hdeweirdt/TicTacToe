@@ -31,7 +31,7 @@ class Board {
         var nextFieldIndex = 0
         for (rowIndex in 0 until dimension) {
             for (columnIndex in 0 until dimension) {
-                fields[rowIndex][columnIndex].symbol = stringWithoutNewLines[nextFieldIndex++]
+                fields[rowIndex][columnIndex] = Field(stringWithoutNewLines[nextFieldIndex++])
             }
         }
     }
@@ -57,8 +57,12 @@ class Board {
      *
      * @throws IllegalArgumentException when the location already has a non-empty symbol.
      */
-    fun placeSymbol(symbol: Char, row: Int, column: Int) {
-        fields[row][column].symbol = symbol
+    fun placeSymbol(symbol: Char, position: Position) {
+        if (fields[position.row][position.column].isEmpty()) {
+            fields[position.row][position.column] = Field(symbol)
+        } else {
+            throw IllegalArgumentException("Can't place overwrite a field!")
+        }
     }
 
     fun symbolFillsRow(symbol: Char, rowIndex: Int): Boolean {
@@ -120,7 +124,7 @@ class Board {
             for (rowIndex in 0 until dimension) {
                 for (columnIndex in 0 until dimension) {
                     if (fields[rowIndex][columnIndex].isEmpty()) {
-                        emptyPositions.add(Pair(rowIndex, columnIndex))
+                        emptyPositions.add(Position(rowIndex, columnIndex))
                     }
                 }
             }
@@ -137,5 +141,16 @@ class Board {
             builder.append('\n')
         }
         return builder.trim().toString()
+    }
+
+    private constructor(fields: Array<Array<Field>>) {
+        this.dimension = fields.size
+        // TODO: better copying
+        this.fields =
+            Array(dimension) { rowIndex -> Array(dimension) { columnIndex -> Field(fields[rowIndex][columnIndex].symbol) } }
+    }
+
+    fun copy(): Board {
+        return Board(fields)
     }
 }

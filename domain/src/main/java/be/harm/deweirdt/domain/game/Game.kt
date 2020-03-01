@@ -38,6 +38,9 @@ class Game {
     val currentPlayer: Player
         get() = players[currentPlayerIndex]
 
+    val otherPlayer: Player
+        get() = players[(currentPlayerIndex + 1) % NUMBER_OF_PLAYERS]
+
     private fun nextPlayer() {
         currentPlayerIndex = (currentPlayerIndex + 1) % NUMBER_OF_PLAYERS
     }
@@ -48,9 +51,8 @@ class Game {
      *
      * @throws IllegalArgumentException when the location already has a non-empty symbol.
      */
-    fun currentPlayerMove(rowIndex: Int, columnIndex: Int) {
-        val symbol = currentPlayer.symbol
-        board.placeSymbol(symbol, rowIndex, columnIndex)
+    fun currentPlayerMove(position: Position) {
+        board.placeSymbol(currentPlayer.symbol, position)
         nextPlayer()
     }
 

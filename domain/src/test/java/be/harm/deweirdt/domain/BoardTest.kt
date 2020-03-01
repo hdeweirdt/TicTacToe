@@ -3,8 +3,7 @@ package be.harm.deweirdt.domain
 import be.harm.deweirdt.domain.game.Board
 import be.harm.deweirdt.domain.game.Position
 import junit.framework.TestCase.assertFalse
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
+import org.junit.Assert.*
 import org.junit.Test
 
 class BoardTest {
@@ -137,7 +136,7 @@ class BoardTest {
         )
 
         // Act
-        board.placeSymbol('O', 0, 0)
+        board.placeSymbol('O', Position(0, 0))
     }
 
     @Test
@@ -409,9 +408,9 @@ class BoardTest {
         // Assert
         assertEquals(
             listOf(
-                Pair(0, 0), Pair(0, 1), Pair(0, 2),
-                Pair(1, 0), Pair(1, 1), Pair(1, 2),
-                Pair(2, 0), Pair(2, 1), Pair(2, 2)
+                Position(0, 0), Position(0, 1), Position(0, 2),
+                Position(1, 0), Position(1, 1), Position(1, 2),
+                Position(2, 0), Position(2, 1), Position(2, 2)
             ), emptyPositions
         )
     }
@@ -451,10 +450,52 @@ class BoardTest {
         // Assert
         assertEquals(
             listOf(
-                Pair(0, 1), Pair(0, 2),
-                Pair(1, 0), Pair(1, 2),
-                Pair(2, 0)
+                Position(0, 1), Position(0, 2),
+                Position(1, 0), Position(1, 2),
+                Position(2, 0)
             ), emptyPositions
         )
+    }
+
+    @Test
+    fun `copy returns a new board whose fields are exactly the same as the original`() {
+        // Arrange
+        val board = Board(
+            """
+            X..
+            .O.
+            .OX
+            """.trimIndent()
+        )
+
+        // Act
+        val newBoard = board.copy()
+
+        // Assert
+        assertEquals(board.dimension, newBoard.dimension)
+        for (rowIndex in 0 until board.dimension) {
+            for (columnIndex in 0 until board.dimension) {
+                assertEquals(board[rowIndex, columnIndex], newBoard[rowIndex, columnIndex])
+            }
+        }
+    }
+
+    @Test
+    fun `when changing a field in a copy of a board, the original board is not changed`() {
+        // Arrange
+        val board = Board(
+            """
+            X..
+            .O.
+            .OX
+            """.trimIndent()
+        )
+        val newBoard = board.copy()
+
+        // Act
+        newBoard.placeSymbol('X', Position(0, 2))
+
+        // Assert
+        assertNotEquals('X', board[0, 2].symbol)
     }
 }
