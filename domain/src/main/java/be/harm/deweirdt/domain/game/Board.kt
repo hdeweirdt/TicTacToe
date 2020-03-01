@@ -61,7 +61,7 @@ internal class Board {
         if (fields[position.row][position.column].isEmpty()) {
             fields[position.row][position.column] = Field(symbol)
         } else {
-            throw IllegalArgumentException("Can't place overwrite a field!")
+            throw IllegalArgumentException("Can't overwrite a field!")
         }
     }
 
