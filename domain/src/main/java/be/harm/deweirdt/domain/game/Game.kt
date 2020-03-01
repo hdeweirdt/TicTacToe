@@ -20,6 +20,11 @@ internal class Game {
             return firstPlayerWon || secondPlayerWon || board.isFull
         }
 
+    val isDraw: Boolean
+        get() {
+            return board.isFull && !firstPlayerWon && !secondPlayerWon
+        }
+
     val winningPlayer: Player?
         get() {
             if (firstPlayerWon) return players[0]
@@ -27,10 +32,10 @@ internal class Game {
             return null
         }
 
-    private val secondPlayerWon
+    private val firstPlayerWon
         get() = hasWon(players[0])
 
-    private val firstPlayerWon
+    private val secondPlayerWon
         get() = hasWon(players[1])
 
     private fun hasWon(player: Player): Boolean {
@@ -54,7 +59,7 @@ internal class Game {
 
     /**
      * Makes the current player place place his symbol on the given location.
-     * Also switches [currentPlayer] to the next [Player].
+     * Also switches [currentPlayer] to the next [Player] as long as the game is not over.
      *
      * @throws IllegalArgumentException when the location already has a non-empty symbol.
      * @throws IllegalStateException when the game was already finished
@@ -62,8 +67,9 @@ internal class Game {
     fun currentPlayerMove(position: Position) {
         if (isOver) {
             throw IllegalStateException("Game is already over, you can't make any more moves.")
-        } else {
-            board.placeSymbol(currentPlayer.symbol, position)
+        }
+        board.placeSymbol(currentPlayer.symbol, position)
+        if (!isOver) {
             nextPlayer()
         }
     }

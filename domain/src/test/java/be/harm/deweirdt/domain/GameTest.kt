@@ -2,10 +2,12 @@ package be.harm.deweirdt.domain
 
 import be.harm.deweirdt.domain.game.Board
 import be.harm.deweirdt.domain.game.Game
+import be.harm.deweirdt.domain.game.Player
 import be.harm.deweirdt.domain.game.Position
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotEquals
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
@@ -147,11 +149,106 @@ class GameTest {
     }
 
     @Test
-    fun `an game where noone has made a move is not over`() {
+    fun `an game where no-one has made a move is not over`() {
         // Arrange
         game = Game()
 
         // Assert
         assertFalse(game.isOver)
+    }
+
+    @Test
+    fun `when a game-finishing move is made the game does not advance to the next player`() {
+        // Arrange
+        val board = Board(
+            """
+            XO.
+            .XO
+            .O.
+            """.trimIndent()
+        )
+        game = Game(board)
+        val currentPlayer = game.currentPlayer
+
+        // Act
+        game.currentPlayerMove(Position(2, 2))
+
+        // Assert
+        assertTrue(game.isOver)
+        assertEquals(currentPlayer, game.currentPlayer)
+    }
+
+    @Test
+    fun `isDraw indicates when a game is finished and there is no winning player`() {
+        // Arrange
+        val board = Board(
+            """
+            XOO
+            OXX
+            XOO
+            """.trimIndent()
+        )
+        game = Game(board)
+
+        // Act
+        val isOver = game.isDraw
+
+        assertTrue(isOver)
+    }
+
+    @Test
+    fun `winningPlayer indicates the winning player`() {
+        // Arrange
+        val board = Board(
+            """
+            X..
+            OX.
+            XOX
+            """.trimIndent()
+        )
+        game = Game(board)
+
+        // Act
+        val winningPlayer = game.winningPlayer
+
+        // Assert
+        assertEquals(Player('X'), winningPlayer)
+    }
+    @Test
+    fun `winningPlayer is null when the game ends in a draw`() {
+        // Arrange
+        val board = Board(
+            """
+            XOX
+            XXO
+            OXO
+            """.trimIndent()
+        )
+        game = Game(board)
+
+        // Act
+        val winningPlayer = game.winningPlayer
+
+        // Assert
+        assertNull(winningPlayer)
+    }
+
+    @Test
+    fun `winningPlayer is null when no player has won the game yet`() {
+        // Arrange
+        val board = Board(
+            """
+            X..
+            OX.
+            XO.
+            """.trimIndent()
+        )
+        game = Game(board)
+
+        // Act
+        val winningPlayer = game.winningPlayer
+
+        // Assert
+        assertNull(winningPlayer)
     }
 }
