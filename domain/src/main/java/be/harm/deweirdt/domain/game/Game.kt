@@ -8,6 +8,14 @@ internal class Game {
         this.board = Board()
     }
 
+    constructor(startingPlayerIndex: Int) : this() {
+        if ((0..1).contains(startingPlayerIndex)) {
+            currentPlayerIndex = startingPlayerIndex
+        } else {
+            throw IllegalArgumentException("Invalid starting player index given. Must be 0 or 1.")
+        }
+    }
+
     val board: Board
 
     val players = arrayOf(

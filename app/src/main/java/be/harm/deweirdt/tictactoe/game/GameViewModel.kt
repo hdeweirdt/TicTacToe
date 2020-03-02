@@ -31,7 +31,6 @@ class GameViewModel(
     val fields: LiveData<Array<Array<String>>> = _fields
 
     init {
-        controller.startNewGame()
         updateUIState()
     }
 
@@ -49,8 +48,12 @@ class GameViewModel(
 
     fun positionChosen(rowIndex: Int, columnIndex: Int) {
         try {
-            controller.currentPlayerMove(rowIndex, columnIndex)
+            controller.playerMove(rowIndex, columnIndex)
             updateUIState()
+            if( !controller.isGameOver()) {
+                controller.aiMove()
+                updateUIState()
+            }
         } catch (e: Exception) {
             _errorMessage.value = e.message
         }
