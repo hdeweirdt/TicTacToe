@@ -15,9 +15,9 @@ internal class HardAIPlayer(
         var bestScoreSoFar: Int = Int.MIN_VALUE
         var bestMoveSoFar: Position? = null
         for (position in game.board.emptyFields) {
-            val moveValue = minimax(game.board, 0, isMaximizingPlayer = false)
-            if (moveValue > bestScoreSoFar) {
-                bestScoreSoFar = moveValue
+            val moveScore = minimax(game.board, 0, isMaximizingPlayer = false)
+            if (moveScore > bestScoreSoFar) {
+                bestScoreSoFar = moveScore
                 bestMoveSoFar = position
             }
         }
