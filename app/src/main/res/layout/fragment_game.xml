@@ -23,9 +23,9 @@
             bind:gameViewModel="@{gameViewModel}"
             layout="@layout/layout_game_difficulty"
             android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_width="wrap_content" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/lbl_game_turn"
@@ -42,8 +42,7 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Player X's turn" />
 
-        <Button
-            style="?attr/materialButtonOutlinedStyle"
+        <com.google.android.material.button.MaterialButton
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:text="@string/lbl_play_again"
