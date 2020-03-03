@@ -6,6 +6,7 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import be.harm.deweirdt.domain.Difficulty
 import be.harm.deweirdt.domain.TicTacToeController
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -28,6 +29,17 @@ class GameViewModel(
         !name.isNullOrEmpty()
     }
 
+    var hardDifficultySelected = true
+
+    private val chosenDifficulty: Difficulty
+        get() {
+            if (hardDifficultySelected) {
+                return Difficulty.HARD
+            } else {
+                return Difficulty.EASY
+            }
+        }
+
     private val _isDraw = MutableLiveData<Boolean>()
     val isDraw: LiveData<Boolean> = _isDraw
 
@@ -38,7 +50,7 @@ class GameViewModel(
     val fields: LiveData<Array<Array<String>>> = _fields
 
     init {
-        controller.startNewGame()
+        controller.startNewGame(chosenDifficulty)
         updateUIState()
     }
 
@@ -67,13 +79,18 @@ class GameViewModel(
 
     fun onPlayAgainClicked() {
         viewModelScope.launch {
-            withContext(Dispatchers.Default) { controller.startNewGame() }
+            withContext(Dispatchers.Default) { controller.startNewGame(chosenDifficulty) }
             withContext(Dispatchers.Main) { updateUIState() }
             if (controller.isComputerTurn) {
                 withContext(Dispatchers.Default) { controller.computerMove() }
                 withContext(Dispatchers.Main) { updateUIState() }
             }
         }
+    }
+
+    fun onCheckedHardDifficulty(hardDifficultySelected: Boolean) {
+        this.hardDifficultySelected = hardDifficultySelected
+        controller.setDifficulty(chosenDifficulty)
     }
 
     @Suppress("UNCHECKED_CAST")

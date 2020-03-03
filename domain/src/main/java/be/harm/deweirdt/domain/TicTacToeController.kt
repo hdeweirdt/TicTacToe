@@ -1,6 +1,7 @@
 package be.harm.deweirdt.domain
 
 import be.harm.deweirdt.domain.AI.AIPlayer
+import be.harm.deweirdt.domain.AI.EasyAIPlayer
 import be.harm.deweirdt.domain.AI.HardAIPlayer
 import be.harm.deweirdt.domain.game.Game
 import be.harm.deweirdt.domain.game.Player
@@ -17,11 +18,18 @@ class TicTacToeController {
     // Initially false so it is true the first time playing the game.
     private var humanGoesFirst = false
 
-    fun startNewGame() {
+    fun startNewGame(difficulty: Difficulty = Difficulty.EASY) {
         game = Game()
-        aiPlayer = HardAIPlayer(game)
 
+        setDifficulty(difficulty)
         setUpPlayers()
+    }
+
+    fun setDifficulty(chosenDifficulty: Difficulty) {
+        when (chosenDifficulty) {
+            Difficulty.EASY -> aiPlayer = EasyAIPlayer(game)
+            Difficulty.HARD -> aiPlayer = HardAIPlayer(game)
+        }
     }
 
     private fun setUpPlayers() {
