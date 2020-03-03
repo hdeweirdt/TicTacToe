@@ -17,3 +17,4 @@ game).
 - Implement memoization for the BoardEvaluator: cache scores of previously seen boards, rotations of the board, or equivalents of the board but with the symbols switched.
 - BUG: Sometimes the coordination between UI and VM is out of sync, current implementation might not be perfect yet.
 - Controller and ViewModel could use some more tests to ensure everything works as expected.
+- Implement saveStateHandle in VM to survice process destruction by OS
