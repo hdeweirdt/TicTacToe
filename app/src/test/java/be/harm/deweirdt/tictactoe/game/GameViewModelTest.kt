@@ -60,6 +60,6 @@ class GameViewModelTest {
         viewModel.positionChosen(1, 1)
 
         // Assert
-        verify { controller.currentPlayerMove(1, 1) }
+        verify { controller.humanMove(1, 1) }
     }
 }

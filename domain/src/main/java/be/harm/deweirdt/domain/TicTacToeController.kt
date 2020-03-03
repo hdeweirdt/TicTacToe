@@ -3,6 +3,7 @@ package be.harm.deweirdt.domain
 import be.harm.deweirdt.domain.AI.AIPlayer
 import be.harm.deweirdt.domain.AI.HardAIPlayer
 import be.harm.deweirdt.domain.game.Game
+import be.harm.deweirdt.domain.game.Player
 import be.harm.deweirdt.domain.game.Position
 
 class TicTacToeController {
@@ -10,36 +11,45 @@ class TicTacToeController {
 
     private lateinit var aiPlayer: AIPlayer
 
-    // Starts as false because the value is inverted when starting a new Game
-    private var playerGoesFirst = false
+    private lateinit var humanPlayer: Player
+    private lateinit var computerPlayer: Player
 
-    private var playersTurn = true
-
-    init {
-        startNewGame()
-    }
+    // Initially false so it is true the first time playing the game.
+    private var humanGoesFirst = false
 
     fun startNewGame() {
-        // Who goes first changes every new game.
-        playerGoesFirst = !playerGoesFirst
-        game = Game(if (playerGoesFirst) 0 else 1)
+        game = Game()
         aiPlayer = HardAIPlayer(game)
-        playersTurn = playerGoesFirst
+
+        setUpPlayers()
     }
 
-    fun playerMove(rowIndex: Int, columnIndex: Int) {
-        if (playersTurn) {
-            val position = Position(rowIndex, columnIndex)
-            game.currentPlayerMove(position)
-            playersTurn = false
+    private fun setUpPlayers() {
+        switchSides()
+        if (humanGoesFirst) {
+            humanPlayer = game.currentPlayer
+            computerPlayer = game.otherPlayer
+        } else {
+            computerPlayer = game.currentPlayer
+            humanPlayer = game.otherPlayer
         }
     }
 
-    fun aiMove() {
-        if (!playersTurn) {
+    private fun switchSides() {
+        humanGoesFirst = !humanGoesFirst
+    }
+
+    fun humanMove(rowIndex: Int, columnIndex: Int) {
+        if (game.currentPlayer == humanPlayer) {
+            val position = Position(rowIndex, columnIndex)
+            game.currentPlayerMove(position)
+        }
+    }
+
+    fun computerMove() {
+        if (game.currentPlayer == computerPlayer) {
             val aiMove = aiPlayer.getNextMove()
             game.currentPlayerMove(aiMove)
-            playersTurn = true
         }
     }
 
@@ -52,13 +62,14 @@ class TicTacToeController {
         return game.currentPlayer.symbol
     }
 
-    fun isGameOver(): Boolean {
-        return game.isOver
-    }
+    val isGameOver
+        get() = game.isOver
 
-    fun isDraw(): Boolean {
-        return game.isDraw
-    }
+    val isComputerTurn
+        get() = game.currentPlayer == computerPlayer
+
+    val isDraw
+        get() = game.isDraw
 
     /**
      * Returns the symbol of the winning player, and null if there is no winning player yet.

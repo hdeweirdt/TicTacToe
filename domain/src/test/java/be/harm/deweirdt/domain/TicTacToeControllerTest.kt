@@ -11,18 +11,18 @@ class TicTacToeControllerTest {
     @Before
     fun setUp() {
         controller = TicTacToeController()
+        controller.startNewGame()
     }
 
     @Test
-    fun `after finishing a game the player that started first must start second`() {
+    fun `after every game the player that starts switches around`() {
         // Arrange
-        val initialBeginningPlayer = controller.getCurrentPlayerSymbol()
+        val computersTurn = controller.isComputerTurn
 
         // Act
         controller.startNewGame()
-        val currentInitialPlayer = controller.getCurrentPlayerSymbol()
 
         // Assert
-        assertNotEquals(initialBeginningPlayer, currentInitialPlayer)
+        assertNotEquals(computersTurn, controller.isComputerTurn)
     }
 }

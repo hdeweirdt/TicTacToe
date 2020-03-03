@@ -8,14 +8,6 @@ internal class Game {
         this.board = Board()
     }
 
-    constructor(startingPlayerIndex: Int) : this() {
-        if ((0..1).contains(startingPlayerIndex)) {
-            currentPlayerIndex = startingPlayerIndex
-        } else {
-            throw IllegalArgumentException("Invalid starting player index given. Must be 0 or 1.")
-        }
-    }
-
     val board: Board
 
     val players = arrayOf(
@@ -61,7 +53,7 @@ internal class Game {
     val otherPlayer: Player
         get() = players[(currentPlayerIndex + 1) % NUMBER_OF_PLAYERS]
 
-    private fun nextPlayer() {
+    private fun switchToNextPlayer() {
         currentPlayerIndex = (currentPlayerIndex + 1) % NUMBER_OF_PLAYERS
     }
 
@@ -78,7 +70,7 @@ internal class Game {
         }
         board.placeSymbol(currentPlayer.symbol, position)
         if (!isOver) {
-            nextPlayer()
+            switchToNextPlayer()
         }
     }
 

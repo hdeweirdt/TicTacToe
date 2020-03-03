@@ -156,6 +156,5 @@ internal class Board {
 
     fun removeSymbol(position: Position) {
         fields[position.row][position.column] = Field()
-
     }
 }

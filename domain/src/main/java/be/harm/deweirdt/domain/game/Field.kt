@@ -1,8 +1,6 @@
 package be.harm.deweirdt.domain.game
 
 const val EMPTY_SYMBOL = '.'
-const val SYMBOL_PLAYER_X = 'X'
-const val SYMBOL_PLAYER_O = 'O'
 
 internal data class Field(val symbol: Char = EMPTY_SYMBOL) {
     fun isEmpty(): Boolean {

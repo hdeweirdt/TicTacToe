@@ -5,11 +5,16 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import be.harm.deweirdt.domain.TicTacToeController
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class GameViewModel(
     private val controller: TicTacToeController
 ) : ViewModel() {
+
     private val _currentPlayerName = MutableLiveData<String>()
     val currentPlayerName: LiveData<String> = _currentPlayerName
 
@@ -17,6 +22,8 @@ class GameViewModel(
     val winningPlayerName: LiveData<String> = _winningPlayerName
 
     private val _gameOver = MutableLiveData<Boolean>()
+    val gameOver: LiveData<Boolean> = _gameOver
+
     val winningPlayerVisible: LiveData<Boolean> = Transformations.map(winningPlayerName) { name ->
         !name.isNullOrEmpty()
     }
@@ -31,13 +38,14 @@ class GameViewModel(
     val fields: LiveData<Array<Array<String>>> = _fields
 
     init {
+        controller.startNewGame()
         updateUIState()
     }
 
     fun updateUIState() {
         _fields.value = convertToStrings(controller.getCurrentBoard())
-        _gameOver.value = controller.isGameOver()
-        _isDraw.value = controller.isDraw()
+        _gameOver.value = controller.isGameOver
+        _isDraw.value = controller.isDraw
         _winningPlayerName.value = controller.getWinningPlayerSymbol()?.toString()
         _currentPlayerName.value = controller.getCurrentPlayerSymbol().toString()
     }
@@ -47,15 +55,24 @@ class GameViewModel(
     }
 
     fun positionChosen(rowIndex: Int, columnIndex: Int) {
-        try {
-            controller.playerMove(rowIndex, columnIndex)
-            updateUIState()
-            if( !controller.isGameOver()) {
-                controller.aiMove()
-                updateUIState()
+        viewModelScope.launch {
+            withContext(Dispatchers.Default) { controller.humanMove(rowIndex, columnIndex) }
+            withContext(Dispatchers.Main) { updateUIState() }
+            if (!controller.isGameOver) {
+                withContext(Dispatchers.Default) { controller.computerMove() }
+                withContext(Dispatchers.Main) { updateUIState() }
             }
-        } catch (e: Exception) {
-            _errorMessage.value = e.message
+        }
+    }
+
+    fun onPlayAgainClicked() {
+        viewModelScope.launch {
+            withContext(Dispatchers.Default) { controller.startNewGame() }
+            withContext(Dispatchers.Main) { updateUIState() }
+            if (controller.isComputerTurn) {
+                withContext(Dispatchers.Default) { controller.computerMove() }
+                withContext(Dispatchers.Main) { updateUIState() }
+            }
         }
     }
 
