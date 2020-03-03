@@ -3,6 +3,8 @@ package be.harm.deweirdt.domain.AI
 import be.harm.deweirdt.domain.game.Board
 import be.harm.deweirdt.domain.game.Game
 import be.harm.deweirdt.domain.game.Position
+import kotlin.math.max
+import kotlin.math.min
 
 internal class HardAIPlayer(
     private val game: Game
@@ -44,39 +46,22 @@ internal class HardAIPlayer(
         if (isMaximizingPlayer) {
             bestScoreSoFar = Int.MIN_VALUE
             for (position in board.emptyFields) {
-                val newScore = evaluatePosition(board, position, depth, isMaximizingPlayer)
-                if (newScore > bestScoreSoFar) {
-                    bestScoreSoFar = newScore
-                }
+                board.placeSymbol(maximizingPlayerSymbol, position)
+                val newScore = minimax(board, depth + 1, !isMaximizingPlayer)
+                board.removeSymbol(position)
+                bestScoreSoFar = max(bestScoreSoFar, newScore)
             }
             return bestScoreSoFar
         } else {
             bestScoreSoFar = Int.MAX_VALUE
             for (position in board.emptyFields) {
-                val newScore = evaluatePosition(board, position, depth, isMaximizingPlayer)
-                if (newScore < bestScoreSoFar) {
-                    bestScoreSoFar = newScore
-                }
+                board.placeSymbol(minimizingPlayerSymbol, position)
+                val newScore = minimax(board, depth + 1, !isMaximizingPlayer)
+                board.removeSymbol(position)
+                bestScoreSoFar = min(bestScoreSoFar, newScore)
             }
             return bestScoreSoFar
         }
-    }
-
-    private fun evaluatePosition(
-        board: Board,
-        position: Position,
-        depth: Int,
-        isMaximizingPlayer: Boolean
-    ): Int {
-        val symbol: Char = if (isMaximizingPlayer) {
-            maximizingPlayerSymbol
-        } else {
-            minimizingPlayerSymbol
-        }
-        board.placeSymbol(symbol, position)
-        val newScore = minimax(board, depth + 1, isMaximizingPlayer.not())
-        board.removeSymbol(position)
-        return newScore
     }
 
     private fun calculateFinalScore(
