@@ -41,6 +41,17 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Player X's turn" />
 
+        <com.google.android.material.button.MaterialButton
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="@string/lbl_play_again"
+            android:onClick="@{() -> gameViewModel.onPlayAgainClicked()}"
+            android:visibility="@{gameViewModel.gameOver ? View.VISIBLE : View.INVISIBLE}"
+            app:layout_constraintBottom_toBottomOf="@+id/lbl_game_turn"
+            app:layout_constraintEnd_toEndOf="@+id/lbl_game_turn"
+            app:layout_constraintStart_toStartOf="@+id/lbl_game_turn"
+            app:layout_constraintTop_toTopOf="@+id/lbl_game_turn" />
+
 
         <include
             android:id="@+id/game_field"
