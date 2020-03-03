@@ -10,7 +10,7 @@ class HardAIPlayerTest {
     private lateinit var aiPlayer: HardAIPlayer
 
     @Test
-    fun `HardAIPlayer always completes a game to make the winning move`() {
+    fun `HardAIPlayer completes a vertical 3-in-a-row to make the winning move`() {
         // Arrange
         val board = Board(
             """
@@ -28,7 +28,7 @@ class HardAIPlayerTest {
     }
 
     @Test
-    fun `HardAIPlayer completes a horizontal 2-in-a-row in order to win`() {
+    fun `HardAIPlayer completes a horizontal 3-in-a-row in order to win`() {
         // Arrange
         val board = Board(
             """
@@ -46,13 +46,13 @@ class HardAIPlayerTest {
     }
 
     @Test
-    fun `HardAIPlayer completes a diagonal 2-in-a-row in order to win`() {
+    fun `HardAIPlayer completes a diagonal 3-in-a-row in order to win`() {
         // Arrange
         val board = Board(
             """
             XXO
             OXO
-            OO.
+            .O.
             """.trimIndent()
         )
         aiPlayer = HardAIPlayer(Game(board))

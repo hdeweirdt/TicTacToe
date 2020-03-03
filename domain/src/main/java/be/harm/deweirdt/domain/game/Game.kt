@@ -82,7 +82,6 @@ internal class Game {
         }
     }
 
-    // For testing purposes only
     internal constructor(board: Board) {
         this.board = board
     }

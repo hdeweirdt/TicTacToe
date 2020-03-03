@@ -3,51 +3,25 @@ package be.harm.deweirdt.domain.AI
 import be.harm.deweirdt.domain.game.Board
 
 internal object BoardEvaluator {
-    // TODO: memoization?
-
-    /**
-     * Evaluates the state of the given [board], from the perspective of the maximizing
-     * or minimizing player (indicated by [isMaximizingPlayer].
-     */
-    fun calculateScore(board: Board, playerSymbol: Char, isMaximizingPlayer: Boolean): Int {
-        if (isMaximizingPlayer) {
-            return calculateForMaximizingPlayer(board, playerSymbol)
-        } else {
-            return calculateForMinimizingPlayer(board, playerSymbol)
-        }
-    }
-
-    private fun calculateForMinimizingPlayer(
-        board: Board,
-        playerSymbol: Char
-    ): Int {
+    fun evaluate(board: Board, maximizerSymbol: Char, minimizerSymbol: Char, depth: Int): Int {
         when {
-            board.symbolFillsAColumn(playerSymbol) -> {
-                return -10
+            board.symbolFillsAColumn(maximizerSymbol) -> {
+                return 10-depth
             }
-            board.symbolFillsARow(playerSymbol) -> {
-                return -10
+            board.symbolFillsARow(maximizerSymbol) -> {
+                return 10-depth
             }
-            board.symbolFilsADiagonal(playerSymbol) -> {
-                return -10
+            board.symbolFilsADiagonal(maximizerSymbol) -> {
+                return 10-depth
             }
-            else -> return 0
-        }
-    }
-
-    private fun calculateForMaximizingPlayer(
-        board: Board,
-        playerSymbol: Char
-    ): Int {
-        when {
-            board.symbolFillsAColumn(playerSymbol) -> {
-                return 10
+            board.symbolFillsAColumn(minimizerSymbol) -> {
+                return -10+depth
             }
-            board.symbolFillsARow(playerSymbol) -> {
-                return 10
+            board.symbolFillsARow(minimizerSymbol) -> {
+                return -10+depth
             }
-            board.symbolFilsADiagonal(playerSymbol) -> {
-                return 10
+            board.symbolFilsADiagonal(minimizerSymbol) -> {
+                return -10+depth
             }
             else -> return 0
         }

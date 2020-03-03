@@ -8,17 +8,24 @@ internal class HardAIPlayer(
     private val game: Game
 ) : AIPlayer {
 
+    private val maximizingPlayerSymbol
+        get() = game.currentPlayer.symbol
+    private val minimizingPlayerSymbol
+        get() = game.otherPlayer.symbol
+
     /**
      * Calculates the next move for the current player in the [game].
      */
     override fun getNextMove(): Position {
         var bestScoreSoFar: Int = Int.MIN_VALUE
         var bestMoveSoFar: Position? = null
-        for (position in game.board.emptyFields) {
+        for (move in game.board.emptyFields) {
+            game.board.placeSymbol(game.currentPlayer.symbol, move)
             val moveScore = minimax(game.board, 0, isMaximizingPlayer = false)
+            game.board.removeSymbol(move)
             if (moveScore > bestScoreSoFar) {
                 bestScoreSoFar = moveScore
-                bestMoveSoFar = position
+                bestMoveSoFar = move
             }
         }
         return bestMoveSoFar!!
@@ -30,58 +37,57 @@ internal class HardAIPlayer(
         isMaximizingPlayer: Boolean
     ): Int {
         if (Game(board).isOver) {
-            return calculateFinalScore(board, isMaximizingPlayer, depth)
+            return calculateFinalScore(board, depth)
         }
 
         var bestScoreSoFar: Int
         if (isMaximizingPlayer) {
             bestScoreSoFar = Int.MIN_VALUE
             for (position in board.emptyFields) {
-                board.placeSymbol(game.currentPlayer.symbol, position)
-                val newScore = minimax(board, depth + 1, isMaximizingPlayer.not())
+                val newScore = evaluatePosition(board, position, depth, isMaximizingPlayer)
                 if (newScore > bestScoreSoFar) {
                     bestScoreSoFar = newScore
                 }
-                board.removeSymbol(position)
             }
             return bestScoreSoFar
         } else {
             bestScoreSoFar = Int.MAX_VALUE
             for (position in board.emptyFields) {
-                board.placeSymbol(game.currentPlayer.symbol, position)
-                val newScore = minimax(board, depth + 1, isMaximizingPlayer.not())
+                val newScore = evaluatePosition(board, position, depth, isMaximizingPlayer)
                 if (newScore < bestScoreSoFar) {
                     bestScoreSoFar = newScore
                 }
-                board.removeSymbol(position)
             }
             return bestScoreSoFar
         }
     }
 
-    private fun calculateFinalScore(
+    private fun evaluatePosition(
         board: Board,
-        isMaximizingPlayer: Boolean,
-        depth: Int
-    ): Int {
-        var score = BoardEvaluator.calculateScore(
-            board,
-            game.currentPlayer.symbol,
-            isMaximizingPlayer
-        )
-        score = modifyScoreToEnsureQuickestWin(score, depth, isMaximizingPlayer)
-        return score
-    }
-
-    private fun modifyScoreToEnsureQuickestWin(
-        score: Int,
+        position: Position,
         depth: Int,
         isMaximizingPlayer: Boolean
     ): Int {
-        return if (isMaximizingPlayer) {
-            score - depth
+        val symbol: Char = if (isMaximizingPlayer) {
+            maximizingPlayerSymbol
         } else {
-            score + depth
+            minimizingPlayerSymbol
         }
+        board.placeSymbol(symbol, position)
+        val newScore = minimax(board, depth + 1, isMaximizingPlayer.not())
+        board.removeSymbol(position)
+        return newScore
+    }
+
+    private fun calculateFinalScore(
+        board: Board,
+        depth: Int
+    ): Int {
+        return BoardEvaluator.evaluate(
+            board,
+            maximizingPlayerSymbol,
+            minimizingPlayerSymbol,
+            depth
+        )
     }
 }
