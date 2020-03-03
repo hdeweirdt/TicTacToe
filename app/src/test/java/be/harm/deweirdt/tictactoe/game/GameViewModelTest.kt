@@ -9,12 +9,14 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
+@ExperimentalCoroutinesApi
 class GameViewModelTest {
     @Rule
     @JvmField
@@ -37,7 +39,7 @@ class GameViewModelTest {
     @Test
     fun `the winning player text is invisible when there is no winning player`() {
         // Arrange
-        every { controller.getWinningPlayerSymbol() } returns null
+        every { controller.getWinningPlayerName() } returns null
 
         // Act
         viewModel.updateUIState()
@@ -50,7 +52,7 @@ class GameViewModelTest {
     @Test
     fun `the winning player text is visible when the winning player is known`() {
         // Arrange
-        every { controller.getWinningPlayerSymbol() } returns 'X'
+        every { controller.getWinningPlayerName() } returns "Human"
 
         // Act
         viewModel.updateUIState()
@@ -61,7 +63,7 @@ class GameViewModelTest {
     }
 
     @Test
-    fun `the position chosen by the player is passed to the controller`() {
+    fun `the position chosen by the player is passed to the controller`() = runBlockingTest {
         // Act
         viewModel.positionChosen(1, 1)
 

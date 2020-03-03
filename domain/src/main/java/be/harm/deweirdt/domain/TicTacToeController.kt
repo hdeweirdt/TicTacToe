@@ -66,6 +66,13 @@ class TicTacToeController {
         return Array(board.dimension) { row -> Array(board.dimension) { column -> board[row, column].symbol } }
     }
 
+    fun getCurrentPlayerName(): String {
+        if (game.currentPlayer == humanPlayer) {
+            return "Human"
+        } else {
+            return "Computer"
+        }
+    }
     fun getCurrentPlayerSymbol(): Char {
         return game.currentPlayer.symbol
     }
@@ -82,7 +89,11 @@ class TicTacToeController {
     /**
      * Returns the symbol of the winning player, and null if there is no winning player yet.
      */
-    fun getWinningPlayerSymbol(): Char? {
-        return game.winningPlayer?.symbol
+    fun getWinningPlayerName(): String? {
+        if (game.winningPlayer == null) {
+            return null
+        } else {
+            return if (game.winningPlayer == humanPlayer) "Human" else "Computer"
+        }
     }
 }

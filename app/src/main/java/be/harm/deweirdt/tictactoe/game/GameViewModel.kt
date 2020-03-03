@@ -10,7 +10,6 @@ import be.harm.deweirdt.domain.Difficulty
 import be.harm.deweirdt.domain.TicTacToeController
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class GameViewModel(
     private val controller: TicTacToeController
@@ -18,6 +17,9 @@ class GameViewModel(
 
     private val _currentPlayerName = MutableLiveData<String>()
     val currentPlayerName: LiveData<String> = _currentPlayerName
+
+    private val _currentPlayerSymbol = MutableLiveData<String>()
+    val currentPlayerSymbol: LiveData<String> = _currentPlayerSymbol
 
     private val _winningPlayerName = MutableLiveData<String>()
     val winningPlayerName: LiveData<String> = _winningPlayerName
@@ -55,11 +57,12 @@ class GameViewModel(
     }
 
     fun updateUIState() {
-        _fields.value = convertToStrings(controller.getCurrentBoard())
-        _gameOver.value = controller.isGameOver
-        _isDraw.value = controller.isDraw
-        _winningPlayerName.value = controller.getWinningPlayerSymbol()?.toString()
-        _currentPlayerName.value = controller.getCurrentPlayerSymbol().toString()
+        _fields.postValue(convertToStrings(controller.getCurrentBoard()))
+        _gameOver.postValue(controller.isGameOver)
+        _isDraw.postValue(controller.isDraw)
+        _winningPlayerName.postValue(controller.getWinningPlayerName())
+        _currentPlayerName.postValue(controller.getCurrentPlayerName())
+        _currentPlayerSymbol.postValue(controller.getCurrentPlayerSymbol().toString())
     }
 
     private fun convertToStrings(board: Array<Array<Char>>): Array<Array<String>> {
@@ -67,23 +70,23 @@ class GameViewModel(
     }
 
     fun positionChosen(rowIndex: Int, columnIndex: Int) {
-        viewModelScope.launch {
-            withContext(Dispatchers.Default) { controller.humanMove(rowIndex, columnIndex) }
-            withContext(Dispatchers.Main) { updateUIState() }
+        viewModelScope.launch(Dispatchers.Default) {
+            controller.humanMove(rowIndex, columnIndex)
+            updateUIState()
             if (!controller.isGameOver) {
-                withContext(Dispatchers.Default) { controller.computerMove() }
-                withContext(Dispatchers.Main) { updateUIState() }
+                controller.computerMove()
+                updateUIState()
             }
         }
     }
 
     fun onPlayAgainClicked() {
-        viewModelScope.launch {
-            withContext(Dispatchers.Default) { controller.startNewGame(chosenDifficulty) }
-            withContext(Dispatchers.Main) { updateUIState() }
+        viewModelScope.launch(Dispatchers.Default) {
+            controller.startNewGame(chosenDifficulty)
+            updateUIState()
             if (controller.isComputerTurn) {
-                withContext(Dispatchers.Default) { controller.computerMove() }
-                withContext(Dispatchers.Main) { updateUIState() }
+                controller.computerMove()
+                updateUIState()
             }
         }
     }
