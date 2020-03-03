@@ -10,7 +10,7 @@ game).
 - There should be a clear indication whose turn it is: the user’s or the computer’s.
 - The user should be able to switch (at any time) between 2 levels of computer AI: normal and hard.
 
-## Stil to-do
+## Still to-do
 
 - Ignore user input when AI is calculating next move.
 - Refactor AI implementation to a depth-limited version of minimax, and let changing difficulty change the allowed depth of the search.
