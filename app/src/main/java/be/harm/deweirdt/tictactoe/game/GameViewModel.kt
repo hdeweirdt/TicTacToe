@@ -10,6 +10,7 @@ import be.harm.deweirdt.domain.Difficulty
 import be.harm.deweirdt.domain.TicTacToeController
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class GameViewModel(
     private val controller: TicTacToeController
@@ -51,18 +52,25 @@ class GameViewModel(
     private val _fields = MutableLiveData<Array<Array<String>>>()
     val fields: LiveData<Array<Array<String>>> = _fields
 
+    private val _uiEnabled = MutableLiveData<Boolean>().apply {
+        value = true
+    }
+    val uiEnabled: LiveData<Boolean> = _uiEnabled
+
     init {
         controller.startNewGame(chosenDifficulty)
-        updateUIState()
+        viewModelScope.launch(Dispatchers.Main) { updateUIState() }
     }
 
-    fun updateUIState() {
-        _fields.postValue(convertToStrings(controller.getCurrentBoard()))
-        _gameOver.postValue(controller.isGameOver)
-        _isDraw.postValue(controller.isDraw)
-        _winningPlayerName.postValue(controller.getWinningPlayerName())
-        _currentPlayerName.postValue(controller.getCurrentPlayerName())
-        _currentPlayerSymbol.postValue(controller.getCurrentPlayerSymbol().toString())
+    suspend fun updateUIState() {
+        withContext(Dispatchers.Main) {
+            _fields.value = (convertToStrings(controller.getCurrentBoard()))
+            _gameOver.value = controller.isGameOver
+            _isDraw.value = controller.isDraw
+            _winningPlayerName.value = controller.getWinningPlayerName()
+            _currentPlayerName.value = controller.getCurrentPlayerName()
+            _currentPlayerSymbol.value = controller.getCurrentPlayerSymbol().toString()
+        }
     }
 
     private fun convertToStrings(board: Array<Array<Char>>): Array<Array<String>> {
@@ -71,29 +79,47 @@ class GameViewModel(
 
     fun positionChosen(rowIndex: Int, columnIndex: Int) {
         viewModelScope.launch(Dispatchers.Default) {
-            controller.humanMove(rowIndex, columnIndex)
+            disableNewUserInput()
+            try {
+                controller.humanMove(rowIndex, columnIndex)
+            } catch (e: IllegalArgumentException) {
+                _errorMessage.postValue("Invalid move!")
+            }
             updateUIState()
             if (!controller.isGameOver) {
                 controller.computerMove()
                 updateUIState()
             }
+            enableNewUserInput()
         }
+    }
+
+    private fun enableNewUserInput() {
+        _uiEnabled.postValue(true)
+    }
+
+    private fun disableNewUserInput() {
+        _uiEnabled.postValue(false)
     }
 
     fun onPlayAgainClicked() {
         viewModelScope.launch(Dispatchers.Default) {
+            disableNewUserInput()
             controller.startNewGame(chosenDifficulty)
             updateUIState()
             if (controller.isComputerTurn) {
                 controller.computerMove()
                 updateUIState()
             }
+            enableNewUserInput()
         }
     }
 
     fun onCheckedHardDifficulty(hardDifficultySelected: Boolean) {
+        disableNewUserInput()
         this.hardDifficultySelected = hardDifficultySelected
         controller.setDifficulty(chosenDifficulty)
+        enableNewUserInput()
     }
 
     @Suppress("UNCHECKED_CAST")

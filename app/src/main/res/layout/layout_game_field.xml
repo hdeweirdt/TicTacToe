@@ -24,6 +24,7 @@
             <TextView
                 android:id="@+id/lbl_field_row0_column0"
                 style="@style/Field.TopStart"
+                android:clickable="@{gameViewModel.uiEnabled}"
                 android:onClick="@{() -> gameViewModel.positionChosen(0,0)}"
                 android:text="@{gameViewModel.fields[0][0]}"
                 tools:text="X" />
@@ -31,12 +32,14 @@
             <TextView
                 android:id="@+id/lbl_field_row0_column1"
                 style="@style/Field.TopMiddle"
+                android:clickable="@{gameViewModel.uiEnabled}"
                 android:onClick="@{() -> gameViewModel.positionChosen(0,1)}"
                 android:text="@{gameViewModel.fields[0][1]}" />
 
             <TextView
                 android:id="@+id/lbl_field_row0_column2"
                 style="@style/Field.TopEnd"
+                android:clickable="@{gameViewModel.uiEnabled}"
                 android:onClick="@{() -> gameViewModel.positionChosen(0,2)}"
                 android:text="@{gameViewModel.fields[0][2]}" />
         </TableRow>
@@ -47,11 +50,13 @@
                 android:id="@+id/lbl_field_row1_column0"
                 style="@style/Field.MiddleStart"
                 android:onClick="@{() -> gameViewModel.positionChosen(1,0)}"
+                android:clickable="@{gameViewModel.uiEnabled}"
                 android:text="@{gameViewModel.fields[1][0]}" />
 
             <TextView
                 android:id="@+id/lbl_field_row1_column1"
                 style="@style/Field.Middle"
+                android:clickable="@{gameViewModel.uiEnabled}"
                 android:onClick="@{() -> gameViewModel.positionChosen(1,1)}"
                 android:text="@{gameViewModel.fields[1][1]}"
                 tools:text="X" />
@@ -60,6 +65,7 @@
                 android:id="@+id/lbl_field_row1_column2"
                 style="@style/Field.MiddleEnd"
                 android:onClick="@{() -> gameViewModel.positionChosen(1,2)}"
+                android:clickable="@{gameViewModel.uiEnabled}"
                 android:text="@{gameViewModel.fields[1][2]}"
                 tools:text="O" />
         </TableRow>
@@ -70,6 +76,7 @@
                 android:id="@+id/lbl_field_row2_column0"
                 style="@style/Field.BottomStart"
                 android:onClick="@{() -> gameViewModel.positionChosen(2,0)}"
+                android:clickable="@{gameViewModel.uiEnabled}"
                 android:text="@{gameViewModel.fields[2][0]}" />
 
             <TextView
@@ -77,12 +84,14 @@
                 style="@style/Field.BottomMiddle"
                 android:onClick="@{() -> gameViewModel.positionChosen(2,1)}"
                 android:text="@{gameViewModel.fields[2][1]}"
+                android:clickable="@{gameViewModel.uiEnabled}"
                 tools:text="O" />
 
             <TextView
                 android:id="@+id/lbl_field_row2_column2"
                 style="@style/Field.BottomEnd"
                 android:onClick="@{() -> gameViewModel.positionChosen(2,2)}"
+                android:clickable="@{gameViewModel.uiEnabled}"
                 android:text="@{gameViewModel.fields[2][2]}"
                 tools:text="X" />
         </TableRow>
