@@ -1,16 +1,17 @@
 package be.harm.deweirdt.domain.AI
 
+import be.harm.deweirdt.domain.Difficulty
 import be.harm.deweirdt.domain.game.Board
 import be.harm.deweirdt.domain.game.Game
 import be.harm.deweirdt.domain.game.Position
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
-class HardAIPlayerTest {
-    private lateinit var aiPlayer: HardAIPlayer
+class AdjustableDifficultyAITest {
+    private lateinit var aiPlayer: AdjustableDifficultyAI
 
     @Test
-    fun `HardAIPlayer completes a vertical 3-in-a-row to make the winning move`() {
+    fun `AdjustableDifficultyAI completes a vertical 3-in-a-row to make the winning move`() {
         // Arrange
         val board = Board(
             """
@@ -19,7 +20,7 @@ class HardAIPlayerTest {
             .X.
             """.trimIndent()
         )
-        aiPlayer = HardAIPlayer(Game(board))
+        aiPlayer = AdjustableDifficultyAI(Game(board), Difficulty.HARD)
 
         // Act
         val nextMove = aiPlayer.getNextMove()
@@ -28,7 +29,7 @@ class HardAIPlayerTest {
     }
 
     @Test
-    fun `HardAIPlayer completes a horizontal 3-in-a-row in order to win`() {
+    fun `AdjustableDifficultyAI completes a horizontal 3-in-a-row in order to win`() {
         // Arrange
         val board = Board(
             """
@@ -37,7 +38,7 @@ class HardAIPlayerTest {
             ...
             """.trimIndent()
         )
-        aiPlayer = HardAIPlayer(Game(board))
+        aiPlayer = AdjustableDifficultyAI(Game(board), Difficulty.HARD)
 
         // Act
         val nextMove = aiPlayer.getNextMove()
@@ -46,7 +47,7 @@ class HardAIPlayerTest {
     }
 
     @Test
-    fun `HardAIPlayer completes a diagonal 3-in-a-row in order to win`() {
+    fun `AdjustableDifficultyAI completes a diagonal 3-in-a-row in order to win`() {
         // Arrange
         val board = Board(
             """
@@ -55,7 +56,7 @@ class HardAIPlayerTest {
             .O.
             """.trimIndent()
         )
-        aiPlayer = HardAIPlayer(Game(board))
+        aiPlayer = AdjustableDifficultyAI(Game(board), Difficulty.HARD)
 
         // Act
         val nextMove = aiPlayer.getNextMove()

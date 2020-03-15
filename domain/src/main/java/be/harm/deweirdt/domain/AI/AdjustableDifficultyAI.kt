@@ -1,14 +1,19 @@
 package be.harm.deweirdt.domain.AI
 
+import be.harm.deweirdt.domain.Difficulty
 import be.harm.deweirdt.domain.game.Board
 import be.harm.deweirdt.domain.game.Game
 import be.harm.deweirdt.domain.game.Position
 import kotlin.math.max
 import kotlin.math.min
 
-internal class HardAIPlayer(
-    private val game: Game
+internal class AdjustableDifficultyAI(
+    private val game: Game,
+    override var difficulty: Difficulty = Difficulty.EASY
 ) : AIPlayer {
+
+    private val maxDepth: Int
+        get() = DifficultyToDepthMapper.mapToMaxDepth(difficulty)
 
     private val maximizingPlayerSymbol
         get() = game.currentPlayer.symbol
@@ -16,15 +21,16 @@ internal class HardAIPlayer(
         get() = game.otherPlayer.symbol
 
     /**
-     * Calculates the next move for the current player in the [game].
+     * Calculates the best next move for the current player in the [game].
      */
     override fun getNextMove(): Position {
         var bestScoreSoFar: Int = Int.MIN_VALUE
         var bestMoveSoFar: Position? = null
         for (move in game.board.emptyFields) {
-            game.board.placeSymbol(game.currentPlayer.symbol, move)
+            game.board.placeSymbol(maximizingPlayerSymbol, move)
             val moveScore = minimax(game.board, 0, isMaximizingPlayer = false)
             game.board.removeSymbol(move)
+
             if (moveScore > bestScoreSoFar) {
                 bestScoreSoFar = moveScore
                 bestMoveSoFar = move
@@ -38,7 +44,7 @@ internal class HardAIPlayer(
         depth: Int,
         isMaximizingPlayer: Boolean
     ): Int {
-        if (Game(board).isOver) {
+        if (depth == maxDepth || Game(board).isOver) {
             return calculateFinalScore(board, depth)
         }
 

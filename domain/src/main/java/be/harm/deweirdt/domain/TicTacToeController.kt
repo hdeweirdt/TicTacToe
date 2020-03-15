@@ -1,8 +1,7 @@
 package be.harm.deweirdt.domain
 
 import be.harm.deweirdt.domain.AI.AIPlayer
-import be.harm.deweirdt.domain.AI.EasyAIPlayer
-import be.harm.deweirdt.domain.AI.HardAIPlayer
+import be.harm.deweirdt.domain.AI.AdjustableDifficultyAI
 import be.harm.deweirdt.domain.game.Game
 import be.harm.deweirdt.domain.game.Player
 import be.harm.deweirdt.domain.game.Position
@@ -20,16 +19,13 @@ class TicTacToeController {
 
     fun startNewGame(difficulty: Difficulty = Difficulty.EASY) {
         game = Game()
+        aiPlayer = AdjustableDifficultyAI(game, difficulty)
 
-        setDifficulty(difficulty)
         setUpPlayers()
     }
 
     fun setDifficulty(chosenDifficulty: Difficulty) {
-        when (chosenDifficulty) {
-            Difficulty.EASY -> aiPlayer = EasyAIPlayer(game)
-            Difficulty.HARD -> aiPlayer = HardAIPlayer(game)
-        }
+        aiPlayer.difficulty = chosenDifficulty
     }
 
     private fun setUpPlayers() {
@@ -73,6 +69,7 @@ class TicTacToeController {
             return "Computer"
         }
     }
+
     fun getCurrentPlayerSymbol(): Char {
         return game.currentPlayer.symbol
     }
