@@ -23,9 +23,9 @@
             bind:gameViewModel="@{gameViewModel}"
             layout="@layout/layout_game_difficulty"
             android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_width="wrap_content" />
+            app:layout_constraintTop_toTopOf="parent" />
 
 
         <TextView
@@ -34,17 +34,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="32dp"
+            android:visibility="@{gameViewModel.gameOver ? View.INVISIBLE : View.VISIBLE}"
             android:text="@{String.format(@string/lbl_game_currentPlayer, gameViewModel.currentPlayerName, gameViewModel.currentPlayerSymbol)}"
             app:layout_constraintBottom_toTopOf="@+id/lbl_game_winner"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/game_field"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Player X's turn" />
+            tools:text="Player X's turn"
+            tools:visibility="invisible" />
 
         <com.google.android.material.button.MaterialButton
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:text="@string/lbl_play_again"
+            android:enabled="@{gameViewModel.uiEnabled}"
             android:onClick="@{() -> gameViewModel.onPlayAgainClicked()}"
             android:visibility="@{gameViewModel.gameOver ? View.VISIBLE : View.INVISIBLE}"
             app:layout_constraintBottom_toBottomOf="@+id/lbl_game_turn"
@@ -78,5 +81,19 @@
             app:layout_constraintStart_toStartOf="@+id/lbl_game_turn"
             app:layout_constraintTop_toBottomOf="@id/lbl_game_turn"
             tools:text="Player X has won!" />
+
+        <TextView
+            android:id="@+id/lbl_game_draw"
+            style="@style/label_game_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/lbl_game_draw"
+            android:visibility="@{gameViewModel.isDraw? View.VISIBLE : View.INVISIBLE}"
+            app:layout_constraintBottom_toBottomOf="@+id/lbl_game_winner"
+            app:layout_constraintEnd_toEndOf="@+id/lbl_game_winner"
+            app:layout_constraintStart_toStartOf="@+id/lbl_game_winner"
+            app:layout_constraintTop_toTopOf="@+id/lbl_game_winner"
+            tools:visibility="invisible" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

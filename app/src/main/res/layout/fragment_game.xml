@@ -40,7 +40,8 @@
             app:layout_constraintEnd_toEndOf="@id/game_field"
             app:layout_constraintStart_toStartOf="@id/game_field"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Player X's turn" />
+            tools:text="Player X's turn"
+            tools:visibility="invisible" />
 
         <com.google.android.material.button.MaterialButton
             android:layout_height="wrap_content"
@@ -72,10 +73,11 @@
             android:layout_height="wrap_content"
             android:text="@string/lbl_game_draw"
             android:visibility="@{gameViewModel.isDraw? View.VISIBLE : View.INVISIBLE}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@id/game_field"
-            app:layout_constraintStart_toStartOf="@id/game_field"
-            app:layout_constraintTop_toBottomOf="@id/game_field" />
+            app:layout_constraintBottom_toBottomOf="@+id/lbl_game_winner"
+            app:layout_constraintEnd_toEndOf="@+id/lbl_game_winner"
+            app:layout_constraintStart_toStartOf="@+id/lbl_game_winner"
+            app:layout_constraintTop_toTopOf="@+id/lbl_game_winner"
+            tools:visibility="invisible" />
 
         <TextView
             android:id="@+id/lbl_game_winner"
