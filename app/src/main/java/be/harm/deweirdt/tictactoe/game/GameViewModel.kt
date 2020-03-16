@@ -8,6 +8,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import be.harm.deweirdt.domain.Difficulty
 import be.harm.deweirdt.domain.TicTacToeController
+import be.harm.deweirdt.tictactoe.R
+import be.harm.deweirdt.tictactoe.util.SingleLiveEvent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -46,8 +48,8 @@ class GameViewModel(
     private val _isDraw = MutableLiveData<Boolean>()
     val isDraw: LiveData<Boolean> = _isDraw
 
-    private val _errorMessage = MutableLiveData<String>()
-    val errorMessage: LiveData<String> = _errorMessage
+    private val _errorMessage = SingleLiveEvent<Int>()
+    val errorMessage: LiveData<Int> = _errorMessage
 
     private val _fields = MutableLiveData<Array<Array<String>>>()
     val fields: LiveData<Array<Array<String>>> = _fields
@@ -83,7 +85,7 @@ class GameViewModel(
             try {
                 controller.humanMove(rowIndex, columnIndex)
             } catch (e: IllegalArgumentException) {
-                _errorMessage.postValue("Invalid move!")
+                _errorMessage.postValue(R.string.error_invalid_move)
             }
             updateUIState()
             if (!controller.isGameOver) {

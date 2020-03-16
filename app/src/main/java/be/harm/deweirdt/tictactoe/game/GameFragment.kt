@@ -35,7 +35,9 @@ class GameFragment : Fragment() {
 
     private fun startListeners() {
         gameViewModel.errorMessage.observe(viewLifecycleOwner, Observer { errorMessage ->
-            Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
+            errorMessage?.let { message ->
+                Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+            }
         })
     }
 }

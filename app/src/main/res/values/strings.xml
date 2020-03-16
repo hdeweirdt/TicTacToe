@@ -4,4 +4,5 @@
     <string name="lbl_game_winningPlayer">%1$s\ has won!</string>
     <string name="lbl_game_draw">It\'s a draw!</string>
     <string name="lbl_play_again">Play again</string>
+    <string name="error_invalid_move">Invalid move!</string>
 </resources>
