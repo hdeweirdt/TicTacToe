@@ -37,6 +37,8 @@ dependencies {
     implementation(project(":domain"))
 
     implementation(CommonDependencies.kotlinStdLib)
+    implementation(CommonDependencies.koin)
+    implementation(CommonDependencies.koinViewModel)
     implementation(AndroidDependencies.appCompat)
     implementation(AndroidDependencies.core)
     implementation(AndroidDependencies.lifecycleExtensions)

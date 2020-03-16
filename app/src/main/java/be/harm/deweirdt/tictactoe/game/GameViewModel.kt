@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import be.harm.deweirdt.domain.Difficulty
 import be.harm.deweirdt.domain.TicTacToeController
@@ -122,19 +121,5 @@ class GameViewModel(
         this.hardDifficultySelected = hardDifficultySelected
         controller.setDifficulty(chosenDifficulty)
         enableNewUserInput()
-    }
-
-    @Suppress("UNCHECKED_CAST")
-    internal class GameViewModelFactory constructor(
-        private val controller: TicTacToeController
-    ) : ViewModelProvider.Factory {
-
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return if (modelClass.isAssignableFrom(GameViewModel::class.java)) {
-                GameViewModel(controller) as T
-            } else {
-                throw IllegalArgumentException("ViewModel Not Found")
-            }
-        }
     }
 }
