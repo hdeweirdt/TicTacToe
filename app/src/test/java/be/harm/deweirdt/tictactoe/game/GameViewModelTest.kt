@@ -37,7 +37,7 @@ class GameViewModelTest {
     }
 
     @Test
-    fun `the winning player text is invisible when there is no winning player`() {
+    fun `the winning player text is invisible when there is no winning player`() = runBlockingTest{
         // Arrange
         every { controller.getWinningPlayerName() } returns null
 
@@ -50,7 +50,7 @@ class GameViewModelTest {
     }
 
     @Test
-    fun `the winning player text is visible when the winning player is known`() {
+    fun `the winning player text is visible when the winning player is known`() = runBlockingTest{
         // Arrange
         every { controller.getWinningPlayerName() } returns "Human"
 
