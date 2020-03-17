@@ -5,8 +5,11 @@ plugins {
 
 dependencies {
     implementation(CommonDependencies.kotlinStdLib)
-    implementation(TestDependencies.junit)
-    implementation(TestDependencies.mockk)
+    implementation(InjectionDependencies.koin)
+
+    testImplementation(TestDependencies.junit)
+    testImplementation(TestDependencies.mockk)
+    testImplementation(InjectionDependencies.koinTest)
 }
 
 repositories {

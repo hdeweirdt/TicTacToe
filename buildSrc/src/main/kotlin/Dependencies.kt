@@ -27,7 +27,6 @@ object AndroidSdk {
 object CommonDependencies {
     private object Versions {
         const val coroutinesVersion = "1.3.3"
-        const val koinVersion = "2.1.4"
     }
 
 
@@ -36,8 +35,6 @@ object CommonDependencies {
         "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.coroutinesVersion}"
     const val coroutinesTest =
         "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.coroutinesVersion}"
-    const val koin = "org.koin:koin-android:${Versions.koinVersion}"
-    const val koinViewModel = "org.koin:koin-android-viewmodel:${Versions.koinVersion}"
 }
 
 object AndroidDependencies {
@@ -83,4 +80,15 @@ object TestDependencies {
     const val mockk = "io.mockk:mockk:${Versions.mockk}"
     const val androidArchCoreTest =
         "androidx.arch.core:core-testing:${Versions.androidArchCoreTestVersion}"
+}
+
+object InjectionDependencies {
+    private object Versions {
+        const val koinVersion = "2.1.4"
+    }
+
+    const val koin = "org.koin:koin-android:${Versions.koinVersion}"
+    const val koinViewModel = "org.koin:koin-android-viewmodel:${Versions.koinVersion}"
+    const val koinTest = "org.koin:koin-test:${Versions.koinVersion}"
+
 }

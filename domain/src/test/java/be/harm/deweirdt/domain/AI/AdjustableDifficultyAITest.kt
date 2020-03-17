@@ -1,14 +1,22 @@
 package be.harm.deweirdt.domain.AI
 
 import be.harm.deweirdt.domain.Difficulty
+import be.harm.deweirdt.domain.domainModule
 import be.harm.deweirdt.domain.game.Board
 import be.harm.deweirdt.domain.game.Game
 import be.harm.deweirdt.domain.game.Position
 import org.junit.Assert.assertEquals
+import org.junit.Rule
 import org.junit.Test
+import org.koin.test.KoinTestRule
 
 class AdjustableDifficultyAITest {
     private lateinit var aiPlayer: AdjustableDifficultyAI
+
+    @get:Rule
+    val koinTestRule = KoinTestRule.create {
+        modules(domainModule)
+    }
 
     @Test
     fun `AdjustableDifficultyAI completes a vertical 3-in-a-row to make the winning move`() {

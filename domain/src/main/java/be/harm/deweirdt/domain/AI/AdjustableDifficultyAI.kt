@@ -6,14 +6,19 @@ import be.harm.deweirdt.domain.game.Game
 import be.harm.deweirdt.domain.game.Position
 import kotlin.math.max
 import kotlin.math.min
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 
 internal class AdjustableDifficultyAI(
     private val game: Game,
     override var difficulty: Difficulty = Difficulty.EASY
-) : AIPlayer {
+) : AIPlayer, KoinComponent {
+
+    private val boardEvaluator: BoardEvaluator by inject()
+    private val difficultyToDepthMapper: DifficultyToDepthMapper by inject()
 
     private val maxDepth: Int
-        get() = DifficultyToDepthMapper.mapToMaxDepth(difficulty)
+        get() = difficultyToDepthMapper.mapToMaxDepth(difficulty)
 
     private val maximizingPlayerSymbol
         get() = game.currentPlayer.symbol
@@ -74,7 +79,7 @@ internal class AdjustableDifficultyAI(
         board: Board,
         depth: Int
     ): Int {
-        return BoardEvaluator.evaluate(
+        return boardEvaluator.evaluate(
             board,
             maximizingPlayerSymbol,
             minimizingPlayerSymbol,

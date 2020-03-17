@@ -1,12 +1,27 @@
 package be.harm.deweirdt.domain
 
+import io.mockk.mockkClass
 import org.junit.Assert.assertNotEquals
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
+import org.koin.test.KoinTest
+import org.koin.test.KoinTestRule
+import org.koin.test.mock.MockProviderRule
 
-class TicTacToeControllerTest {
+class TicTacToeControllerTest : KoinTest {
 
     private lateinit var controller: TicTacToeController
+
+    @get:Rule
+    val koinTestRule = KoinTestRule.create {
+        modules(domainModule)
+    }
+
+    @get:Rule
+    val mockProvider = MockProviderRule.create {
+        mockkClass(it, relaxed = true)
+    }
 
     @Before
     fun setUp() {

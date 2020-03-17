@@ -9,9 +9,16 @@ import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
+import org.junit.Rule
 import org.junit.Test
+import org.koin.test.KoinTestRule
 
 class GameTest {
+
+    @get:Rule
+    val koinTestRule = KoinTestRule.create {
+        modules(domainModule)
+    }
 
     private lateinit var game: Game
 

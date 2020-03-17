@@ -1,11 +1,25 @@
 package be.harm.deweirdt.domain.game
 
+import org.jetbrains.annotations.TestOnly
+import org.koin.core.KoinComponent
+import org.koin.core.get
+
 private const val NUMBER_OF_PLAYERS = 2
 
-internal class Game {
+internal class Game : KoinComponent {
 
     constructor() {
-        this.board = Board()
+        this.board = get()
+    }
+
+    /**
+     * Use to create a game with a given board state.
+     * There will be no checks to ensure this is a valid board, or that the correct player will have
+     * its turn next.
+     */
+    @TestOnly
+    internal constructor(board: Board) {
+        this.board = board
     }
 
     val board: Board
@@ -72,10 +86,6 @@ internal class Game {
         if (!isOver) {
             switchToNextPlayer()
         }
-    }
-
-    internal constructor(board: Board) {
-        this.board = board
     }
 
     override fun toString(): String {

@@ -2,7 +2,7 @@ package be.harm.deweirdt.domain.AI
 
 import be.harm.deweirdt.domain.game.Board
 
-internal object BoardEvaluator {
+internal class BoardEvaluator {
     // TODO: make a memoizing version of this. Would require to first calculate/remind the score, then
     // add/subtract the depth. Could also mirror the score of max/minimizersymbol by negating the
     // resulting score.

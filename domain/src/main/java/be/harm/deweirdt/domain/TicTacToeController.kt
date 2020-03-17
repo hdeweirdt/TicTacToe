@@ -1,12 +1,14 @@
 package be.harm.deweirdt.domain
 
 import be.harm.deweirdt.domain.AI.AIPlayer
-import be.harm.deweirdt.domain.AI.AdjustableDifficultyAI
 import be.harm.deweirdt.domain.game.Game
 import be.harm.deweirdt.domain.game.Player
 import be.harm.deweirdt.domain.game.Position
+import org.koin.core.KoinComponent
+import org.koin.core.get
+import org.koin.core.parameter.parametersOf
 
-class TicTacToeController {
+class TicTacToeController : KoinComponent {
     private lateinit var game: Game
 
     private lateinit var aiPlayer: AIPlayer
@@ -18,8 +20,8 @@ class TicTacToeController {
     private var humanGoesFirst = false
 
     fun startNewGame(difficulty: Difficulty = Difficulty.EASY) {
-        game = Game()
-        aiPlayer = AdjustableDifficultyAI(game, difficulty)
+        game = get()
+        aiPlayer = get { parametersOf(game, difficulty) }
 
         setUpPlayers()
     }
