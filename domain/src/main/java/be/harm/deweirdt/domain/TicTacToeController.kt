@@ -89,7 +89,7 @@ class TicTacToeController : KoinComponent {
      * Returns the symbol of the winning player, and null if there is no winning player yet.
      */
     fun getWinningPlayerName(): String? {
-        if (game.winningPlayer == null) {
+        if (!game.isOver) {
             return null
         } else {
             return if (game.winningPlayer == humanPlayer) "Human" else "Computer"
